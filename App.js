@@ -1,8 +1,8 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import HomeScreen from './screens/Homescreen'; 
-import Watchlist from './screens/Watchlist';
+import HomeScreen from './src/screens/Homescreen'; 
+import Watchlist from './src/screens/Watchlist';
 
 const Drawer = createDrawerNavigator();
 
@@ -28,7 +28,7 @@ export default function App() {
           headerTintColor: '#ccc', 
         }}
       >
-        <Drawer.Screen name="Leffat" component={HomeScreen} />
+        <Drawer.Screen name="Leffa" component={HomeScreen} />
         <Drawer.Screen name="Katselulista" component={Watchlist} />
       </Drawer.Navigator>
     </NavigationContainer>
