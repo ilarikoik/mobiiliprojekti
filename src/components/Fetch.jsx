@@ -3,7 +3,7 @@ import { View, Text, Button,ActivityIndicator} from "react-native";
 import { useState, useEffect } from "react";
 import Card from "./Card";
 
-export default function Fetch({ url}) {
+export default function Fetch({url,navigation}) {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
 
@@ -31,6 +31,6 @@ export default function Fetch({ url}) {
   }
   return (
   <View>
-    <Card movies={data}></Card>
+    <Card movies={data} navigation={navigation}></Card>
 </View>)
 }

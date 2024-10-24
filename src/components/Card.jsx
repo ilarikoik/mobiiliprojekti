@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, Button, FlatList ,StyleSheet,ImageBackground,TouchableOpacity, ActivityIndicator} from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+import { API_KEY } from "../../config";
 
 
-export default function Card({movies}) {
-    
+export default function Card({navigation,movies}) {
+const [id,setId] = useState();
 const POSTER = "https://image.tmdb.org/t/p/w500"
+const movieUrl = `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`
 
 const handleFavorite = () => {
     console.log('lisätty')
@@ -14,13 +16,18 @@ const handleFavorite = () => {
 }
 // eli lähetä api LeffaSivu komponentille id:llä? ja se näyttää siellä vaa sen tiedot sit ?
 // 
+    const details = (itemId) => {
+        setId(itemId);
+        // kun vastaanotetaan propsi pitää käyttää tätä annettua nimeä
+        navigation.navigate('Details',{movieUrl})
+    }
   return (
   <View style={styles.container}>
     <FlatList
     data={movies}
     keyExtractor={item => item.id.toString() }
     renderItem={({item}) => (
-        <TouchableOpacity onLongPress={() => console.log('avaa leffan oma sivu')}>
+        <TouchableOpacity onLongPress={() => details(item.id)}>
         <ImageBackground
             source={{ uri: `${POSTER}${item.poster_path || item.backdrop_path}` }} 
             style={styles.item}
@@ -50,6 +57,7 @@ const styles = StyleSheet.create({
       alignContent:'center',
       alignItems:'center',
       justifyContent:'center',
+      paddingBottom:100,
     },
     item: {
         height:270,

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet ,Button} from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { AntDesign } from "@expo/vector-icons";
 import Card from "../components/Card"; 
@@ -25,7 +25,7 @@ export default function HomeScreen({ navigation }) {
 
   }
   
-  
+  // nagivation propsina fetchille ja sieltä cardille , pitää kulkea "ylhäätlä" alaspäin aina tämmösissä ilmeisesti
   return (
     <View style={styles.container}>
       <Text style={styles.h1text}>Kaikki elokuvat</Text>
@@ -43,7 +43,7 @@ export default function HomeScreen({ navigation }) {
           <AntDesign name="search1" size={24} color="#ccc" />
         </TouchableOpacity>
       </View>
-      <Fetch url={url} /> 
+      <Fetch url={url} navigation={navigation} /> 
     </View>
   );
 }

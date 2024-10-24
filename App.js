@@ -1,10 +1,23 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './src/screens/Homescreen'; 
 import Watchlist from './src/screens/Watchlist';
+import MovieDetails from './src/screens/MovieDetails';
 
+
+const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
+
+const StackNavigator = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Leffa" component={HomeScreen} />
+      <Stack.Screen name="Details" component={MovieDetails} />
+    </Stack.Navigator>
+  );
+};
 
 // teksti '#ccc', 
 // tausta '#333'
@@ -30,6 +43,8 @@ export default function App() {
       >
         <Drawer.Screen name="Leffa" component={HomeScreen} />
         <Drawer.Screen name="Katselulista" component={Watchlist} />
+        <Drawer.Screen name="Details" component={MovieDetails} />
+        <Drawer.Screen name="Teatterit" component={Watchlist} />
       </Drawer.Navigator>
     </NavigationContainer>
   );
