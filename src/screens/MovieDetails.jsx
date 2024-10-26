@@ -53,19 +53,19 @@ export default function MovieDetails({ navigation, route }) {
             style={styles.item}
             imageStyle={styles.image}
           />
+        </View>
           <Text style={styles.desc}>{movie.overview}</Text>
           <Text style={styles.desc}>Genres: {genres}</Text>
           <Text style={styles.desc}>
             country: {movie.origin_country} - show on map {"-->"}
           </Text>
           <Text style={styles.desc}>
-            avg vote: {movie.vote_average} - vote count: {movie.vote_count}
+            avg vote: {movie.vote_average.toFixed(1)} - vote count: {movie.vote_count}
           </Text>
           <Text style={styles.desc}>Release date: {movie.release_date}</Text>
           <TouchableOpacity style={styles.theatherbutton}>
           <Text style={styles.buttonText}>Lähimmät teatterit !</Text>
           </TouchableOpacity>
-        </View>
       </ScrollView>
     </View>
   );
@@ -79,7 +79,6 @@ const styles = StyleSheet.create({
   },
   moviecontainer: {
     width: "95%",
-    height: "100%",
     borderRadius: 10,
     padding: 10,
     alignContent: "center",
@@ -107,9 +106,10 @@ const styles = StyleSheet.create({
     padding:10,
     opacity: 0.7,
     width:300,
+    alignSelf:'center',
   },
   item: {
-    height: 350,
+    height: 400,
     width: 300,
     margin: 10,
     overflow: "hidden",

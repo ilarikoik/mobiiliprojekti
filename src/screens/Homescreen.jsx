@@ -7,11 +7,12 @@ import Fetch from "../components/Fetch";
 import { API_KEY, BASE_URL,SEARCH_URL, APIANDKEY } from "../../config";
 import FetchUpcomingMovies from "../apiCalls/FetchUpcomingMovies";
 import fetchMovieByName from "../apiCalls/FetchMovieByName";
+import Icon from 'react-native-vector-icons/AntDesign';
 
 export default function HomeScreen({ navigation }) {
   const [movies,setMovies] = useState([]);
-  const [keyword,setKeyword] = useState('');
-  const [url, setUrl] = useState(`${BASE_URL}${API_KEY}`);
+  const [keyword,setKeyword] = useState(''); 
+  const [url, setUrl] = useState(`${BASE_URL}${API_KEY}`); // voi poistaa?
   const [loading, setLoading] = useState(false);
 
   
@@ -58,6 +59,7 @@ export default function HomeScreen({ navigation }) {
           value={keyword}
           onChangeText={(text) => setKeyword(text)}
         />
+       <Icon style={{padding:10,}} onPress={() => setKeyword('')} name="close" size={22} color="#ccc" />
         <TouchableOpacity
           style={styles.searchIcon}
           onPress={handleUrl}
