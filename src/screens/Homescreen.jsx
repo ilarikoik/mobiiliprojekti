@@ -22,7 +22,7 @@ export default function HomeScreen({ navigation }) {
       const movie = await fetchMovieByName(keyword)
       setMovies(movie)
       setLoading(false)
-      setKeyword('')
+      // setKeyword('')
       Keyboard.dismiss();
     }
     // haettaessa tyhjää palauttaa UpComingMovies
@@ -43,13 +43,13 @@ export default function HomeScreen({ navigation }) {
       setLoading(false)
     }
     getUpcoming();
-  },[])
+  },[keyword.length === 0])
 
   
   // nagivation propsina fetchille ja sieltä cardille , pitää kulkea "ylhäätlä" alaspäin aina tämmösissä ilmeisesti
   return (
     <View style={styles.container}>
-      <Text style={styles.h1text}>Kaikki elokuvat</Text>
+      <Text style={styles.h1text}>{keyword.length < 1 ? 'Tulossa' : `Elokuvat haulla: ${keyword}`}</Text>
       <View style={styles.searchcontainer}>
         <TextInput
           style={styles.search}
@@ -65,7 +65,6 @@ export default function HomeScreen({ navigation }) {
           <AntDesign name="search1" size={24} color="#ccc" />
         </TouchableOpacity>
       </View>
-
       {!loading ? (<Card movies={movies} navigation={navigation}></Card>) : (<ActivityIndicator size="large" color="#fff"style={{marginTop:100,}} />)}
     </View>
   );

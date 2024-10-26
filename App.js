@@ -12,7 +12,7 @@ const Drawer = createDrawerNavigator();
 
 const StackNavigator = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Leffa" component={HomeScreen} />
       <Stack.Screen name="Details" component={MovieDetails} />
     </Stack.Navigator>
@@ -26,7 +26,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Drawer.Navigator 
-        initialRouteName="Leffat"
+        initialRouteName="Leffa"
         screenOptions={{
           drawerStyle: {
             backgroundColor: '#333', 
@@ -41,9 +41,13 @@ export default function App() {
           headerTintColor: '#ccc', 
         }}
       >
-        <Drawer.Screen name="Leffa" component={HomeScreen} />
+        {/* burgeri menu / "päämenu" , stackilla kuljetaan ohjelman sisällä eri sivuille */}
+        {/* stacknavigaton ton komponentiks koska Leffa/Kotisivu sisällä kuljetaan näille stackin antamille sivuille */}
+        {/* jos haluun Teatterissa esim mennä toiselle sivulle niin sille voi tehdä oman stäkin tai lisätä alkuperäseen stäkkiin*/}
+        {/* omat stäkit jos on monimutkane navigointi muute samaa vaa  */}
+        <Drawer.Screen name="Leffa" component={StackNavigator} />
         <Drawer.Screen name="Katselulista" component={Watchlist} />
-        <Drawer.Screen name="Details" component={MovieDetails} />
+        {/* <Drawer.Screen name="Details" component={MovieDetails} /> */}
         <Drawer.Screen name="Teatterit" component={Watchlist} />
       </Drawer.Navigator>
     </NavigationContainer>

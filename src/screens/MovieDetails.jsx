@@ -7,6 +7,7 @@ import {
   Image,
   ImageBackground,
   FlatList,
+  TouchableOpacity,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView, useSafeAreaFrame } from "react-native-safe-area-context";
@@ -38,7 +39,7 @@ export default function MovieDetails({ navigation, route }) {
     : null;
   return (
     <View style={styles.container}>
-      <Button title="Go back" onPress={() => navigation.goBack()} />
+        <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}><Text style={styles.buttonText}>Takaisin</Text></TouchableOpacity>
       <ScrollView>
         <View style={styles.moviecontainer}>
           <Text style={styles.title}>{movie.title}</Text>
@@ -102,5 +103,18 @@ const styles = StyleSheet.create({
     resizeMode: "contain", // Ensures the image fits within the bounds
     alignSelf: "center",
     borderRadius: 5,
+  },
+  button: {
+    borderRadius: 5,
+    backgroundColor:'#FEBE10',
+    height:50,
+    justifyContent:'center',
+},
+buttonText: {
+      textAlign:'center',
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 10,
   },
 });
