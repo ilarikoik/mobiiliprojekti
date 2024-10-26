@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './src/screens/Homescreen'; 
 import Watchlist from './src/screens/Watchlist';
 import MovieDetails from './src/screens/MovieDetails';
+import Maps from './src/components/Maps';
 
 
 const Stack = createStackNavigator();
@@ -48,7 +49,7 @@ export default function App() {
         <Drawer.Screen name="Leffa" component={StackNavigator} />
         <Drawer.Screen name="Katselulista" component={Watchlist} />
         {/* <Drawer.Screen name="Details" component={MovieDetails} /> */}
-        <Drawer.Screen name="Teatterit" component={Watchlist} />
+        <Drawer.Screen name="Teatterit" component={Maps} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

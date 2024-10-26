@@ -13,23 +13,21 @@ import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView, useSafeAreaFrame } from "react-native-safe-area-context";
 import fetchMovieById from "../apiCalls/fetchMovieById";
 
-
 export default function MovieDetails({ navigation, route }) {
-  const { movieId } = route.params; // sama nimi ku lähetettäessä 
+  const { movieId } = route.params; // sama nimi ku lähetettäessä
   const [movie, setMovie] = useState();
   const POSTER = "https://image.tmdb.org/t/p/w500";
   const [loading, setLoading] = useState(false);
 
-  useEffect(() =>  {
+  useEffect(() => {
     const getById = async () => {
-    setLoading(true)
-    const movie = await fetchMovieById(movieId)
-    setMovie(movie)
-    setLoading(false);
+      setLoading(true);
+      const movie = await fetchMovieById(movieId);
+      setMovie(movie);
+      setLoading(false);
     };
     getById();
-  },[movieId])
-
+  }, [movieId]);
 
   if (!movie) {
     return <Text>No movie details available.</Text>;
@@ -39,7 +37,12 @@ export default function MovieDetails({ navigation, route }) {
     : null;
   return (
     <View style={styles.container}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}><Text style={styles.buttonText}>Takaisin</Text></TouchableOpacity>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.goBack()}
+      >
+        <Text style={styles.buttonText}>Takaisin</Text>
+      </TouchableOpacity>
       <ScrollView>
         <View style={styles.moviecontainer}>
           <Text style={styles.title}>{movie.title}</Text>
@@ -52,11 +55,16 @@ export default function MovieDetails({ navigation, route }) {
           />
           <Text style={styles.desc}>{movie.overview}</Text>
           <Text style={styles.desc}>Genres: {genres}</Text>
-          <Text style={styles.desc}>country: {movie.origin_country} - show on map {'-->'}</Text>
+          <Text style={styles.desc}>
+            country: {movie.origin_country} - show on map {"-->"}
+          </Text>
           <Text style={styles.desc}>
             avg vote: {movie.vote_average} - vote count: {movie.vote_count}
           </Text>
           <Text style={styles.desc}>Release date: {movie.release_date}</Text>
+          <TouchableOpacity style={styles.theatherbutton}>
+          <Text style={styles.buttonText}>Lähimmät teatterit !</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </View>
@@ -91,27 +99,34 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginTop: 15,
     marginBottom: 15,
+    fontWeight: "bold",
+  },
+  theatherbutton: {
+    borderRadius: 10,
+    backgroundColor: "#ccc",
+    padding:10,
+    opacity: 0.7,
+    width:300,
   },
   item: {
     height: 350,
     width: 300,
     margin: 10,
-    borderRadius: 5,
     overflow: "hidden",
   },
   image: {
-    resizeMode: "contain", // Ensures the image fits within the bounds
     alignSelf: "center",
-    borderRadius: 5,
+    borderRadius: 20,
   },
   button: {
     borderRadius: 5,
-    backgroundColor:'#FEBE10',
-    height:50,
-    justifyContent:'center',
-},
-buttonText: {
-      textAlign:'center',
+    backgroundColor: "#FEBE10",
+    height: 50,
+    justifyContent: "center",
+
+  },
+  buttonText: {
+    textAlign: "center",
     fontSize: 24,
     fontWeight: "bold",
     color: "#333",
