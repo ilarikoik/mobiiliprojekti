@@ -17,4 +17,4 @@ const fetchMovieByName = async (keyword) => {
 export default fetchMovieByName;
 
 
-  // "https://api.themoviedb.org/3/search/movie?query=Shrek&api_key=56c4fbb22fb2085dfd77610e1689a704"
+  // "https://api.themoviedb.org/3/search/movie?query=Shrek&api_key="

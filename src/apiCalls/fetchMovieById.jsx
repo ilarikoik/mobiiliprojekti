@@ -11,12 +11,12 @@ const fetchMovieById = async (movieId) => {
   } catch (error) {
     console.log(`Error fetching movie id: ${movieId}:`, error);
     return null;
-    
+
   }
 };
 
 export default fetchMovieById;
 
 
-  // "https://api.themoviedb.org/3/movie/55825?api_key=56c4fbb22fb2085dfd77610e1689a704"
+  // "https://api.themoviedb.org/3/movie/55825?api_key="
   // `${URL}/movie/${movieId}?${APIANDKEY}`

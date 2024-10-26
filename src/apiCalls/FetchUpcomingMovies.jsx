@@ -22,4 +22,4 @@ const fetchUpcomingMovies = async () => {
 export default fetchUpcomingMovies; // Default export
 
 
-  // "https://api.themoviedb.org/3/movie/upcoming?api_key=56c4fbb22fb2085dfd77610e1689a704"
+  // "https://api.themoviedb.org/3/movie/upcoming?api_key="
