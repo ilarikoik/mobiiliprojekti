@@ -1,29 +1,50 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet ,Button} from "react-native";
+import { View, Text, StyleSheet ,Button,ActivityIndicator,Keyboard} from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { AntDesign } from "@expo/vector-icons";
 import Card from "../components/Card"; 
 import Fetch from "../components/Fetch";
 import { API_KEY, BASE_URL,SEARCH_URL, APIANDKEY } from "../../config";
-
+import FetchUpcomingMovies from "../apiCalls/FetchUpcomingMovies";
+import fetchMovieByName from "../apiCalls/FetchMovieByName";
 
 export default function HomeScreen({ navigation }) {
   const [movies,setMovies] = useState([]);
   const [keyword,setKeyword] = useState('');
   const [url, setUrl] = useState(`${BASE_URL}${API_KEY}`);
-  
-  // asetetaa URL ja lähetetään se Fetch komponentille
-  // jos keyword tyhjä niin palauttaa trendaavat leffat
-  const handleUrl = () => {
-    let urly;
-    if(keyword.length === 0){
-      urly = `${BASE_URL}${API_KEY}`
-      setUrl(urly)
-    }
-    urly = `${SEARCH_URL}${keyword}${APIANDKEY}`
-    setUrl(urly)
+  const [loading, setLoading] = useState(false);
 
+  
+  // muista await ja async aina näissä !
+  const handleUrl =  async() => {
+    if(keyword.length > 0) {
+      setLoading(true)
+      const movie = await fetchMovieByName(keyword)
+      setMovies(movie)
+      setLoading(false)
+      setKeyword('')
+      Keyboard.dismiss();
+    }
+    // haettaessa tyhjää palauttaa UpComingMovies
+    if(keyword.length === 0) {
+      setLoading(true)
+      const trendingMovies = await FetchUpcomingMovies();
+      setMovies(trendingMovies)
+      setLoading(false)
+    }
   }
+
+  useEffect(() => {
+    const getUpcoming = async () => {
+      setLoading(true)
+      const upComing = await FetchUpcomingMovies();
+      setMovies(upComing)
+      console.log(upComing)
+      setLoading(false)
+    }
+    getUpcoming();
+  },[])
+
   
   // nagivation propsina fetchille ja sieltä cardille , pitää kulkea "ylhäätlä" alaspäin aina tämmösissä ilmeisesti
   return (
@@ -34,6 +55,7 @@ export default function HomeScreen({ navigation }) {
           style={styles.search}
           placeholder="Hae elokuvia"
           placeholderTextColor="#ccc"
+          value={keyword}
           onChangeText={(text) => setKeyword(text)}
         />
         <TouchableOpacity
@@ -43,7 +65,8 @@ export default function HomeScreen({ navigation }) {
           <AntDesign name="search1" size={24} color="#ccc" />
         </TouchableOpacity>
       </View>
-      <Fetch url={url} navigation={navigation} /> 
+
+      {!loading ? (<Card movies={movies} navigation={navigation}></Card>) : (<ActivityIndicator size="large" color="#fff"style={{marginTop:100,}} />)}
     </View>
   );
 }

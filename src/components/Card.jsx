@@ -5,9 +5,9 @@ import { API_KEY } from "../../config";
 
 
 export default function Card({navigation,movies}) {
-const [id,setId] = useState();
+const [movieId,setMovieId] = useState();
 const POSTER = "https://image.tmdb.org/t/p/w500"
-const movieUrl = `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`
+// const movieUrl = `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`
 
 const handleFavorite = () => {
     console.log('lisätty')
@@ -15,11 +15,11 @@ const handleFavorite = () => {
 
 }
 // eli lähetä api LeffaSivu komponentille id:llä? ja se näyttää siellä vaa sen tiedot sit ?
-// 
     const details = (itemId) => {
-        setId(itemId);
+        setMovieId(itemId);
         // kun vastaanotetaan propsi pitää käyttää tätä annettua nimeä
-        navigation.navigate('Details',{movieUrl})
+        console.log(itemId)
+        navigation.navigate('Details',{movieId: itemId})
     }
   return (
   <View style={styles.container}>

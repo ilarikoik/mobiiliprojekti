@@ -10,31 +10,25 @@ import {
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView, useSafeAreaFrame } from "react-native-safe-area-context";
+import fetchMovieById from "../apiCalls/fetchMovieById";
+
 
 export default function MovieDetails({ navigation, route }) {
-  const { movieUrl } = route.params;
-  console.log(movieUrl);
+  const { movieId } = route.params; // sama nimi ku lähetettäessä 
   const [movie, setMovie] = useState();
-  const [loading, setLoading] = useState(false);
   const POSTER = "https://image.tmdb.org/t/p/w500";
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchMovieById = async () => {
-      try {
-        setLoading(true);
-        const res = await fetch(movieUrl);
-        const response = await res.json();
-        console.log(movie);
-        setMovie(response);
-      } catch (error) {
-        console.log("------" + error);
-      } finally {
-        setLoading(false);
-      }
+  useEffect(() =>  {
+    const getById = async () => {
+    setLoading(true)
+    const movie = await fetchMovieById(movieId)
+    setMovie(movie)
+    setLoading(false);
     };
-    fetchMovieById();
-    console.log("toimiii");
-  }, [movieUrl]);
+    getById();
+  },[movieId])
+
 
   if (!movie) {
     return <Text>No movie details available.</Text>;
