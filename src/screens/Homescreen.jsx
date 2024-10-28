@@ -8,7 +8,7 @@ import {
   Keyboard,
   Alert,
 } from "react-native";
-import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
+import { ScrollView, TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { AntDesign } from "@expo/vector-icons";
 import Card from "../components/Card";
 import Fetch from "../components/Fetch";
@@ -27,16 +27,19 @@ export default function HomeScreen({ navigation }) {
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState(`${BASE_URL}${API_KEY}`); // voi poistaa?
   const [loading, setLoading] = useState(false);
+  const [pressed, setPressed] = useState(false);
+  const [comingUpPressed, setComingUpPressed] = useState(false);
+  const [Trendingpressed, setTrendingPressed] = useState(false);
 
   // muista await ja async aina näissä !
   const handleUrl = async () => {
     if (keyword.length > 0) {
+      toggleThemes();
       setLoading(true);
       const movie = await fetchMovieByName(keyword);
       setMovies(movie);
       setTitle(`Elokuvat haulla: ${keyword}`)
       setLoading(false);
-      // setKeyword('')
       Keyboard.dismiss();
     }
     // haettaessa tyhjää palauttaa UpComingMovies
@@ -60,26 +63,40 @@ export default function HomeScreen({ navigation }) {
     };
     getUpcoming();
     setTitle("Tulossa");
+  }, [keyword.length === 0, handlePress]);
 
-  }, [keyword.length === 0]);
+  // buttonia painaessa kutsutaan tätä ja sen jälkeen vaihdetaan sen boolean missä sitä on kutsuttu
+  // style seuraa sitä mikä on true
+  const toggleThemes = () => {
+      setComingUpPressed(false)
+      setTrendingPressed(false)
+      setPressed(false)
+  }
 
   const moviesListTopRated = async () => {
+    toggleThemes(); // laitetaan kaikki buttonit false
+    setPressed((prevPressed) => !prevPressed ) // muutetaan true jotta style näkyy
+    console.log(pressed)
     setTitle('Parhaiten arvioidut elokuvat')
     let movies = await fetchTopRatedMovies();
     setMovies(movies)
   }
   
   const moviesListTrending = async () => {
-    // lisää css backgroundcolor siihe buttonii kun sillä hawetaan
+    toggleThemes();
+    setTrendingPressed((prevPressed) => !prevPressed);
     setTitle('Tällä hetkellä suositut elokuvat')
     let movies = await fetchTrendingMovies();
     setMovies(movies)
   }
   const moviesListComingUp = async () => {
+    toggleThemes();
+    setComingUpPressed((prevPressed) => !prevPressed);
     setTitle('Tulossa elokuviin')
     let movies = await fetchUpcomingMovies();
     setMovies(movies)
   }
+
 
   const handlePress = () => {
     setKeyword("");
@@ -87,7 +104,11 @@ export default function HomeScreen({ navigation }) {
     Keyboard.dismiss()
   };
   // nagivation propsina fetchille ja sieltä cardille , pitää kulkea "ylhäätlä" alaspäin aina tämmösissä ilmeisesti
+  
+  // jos hajoo niin koska scrollview ja flatlist samassa? vissii ei kannata olla
   return (
+  <>
+      <ScrollView>
     <View style={styles.container}>
       <Text style={styles.h1text}>
         {title}
@@ -99,14 +120,14 @@ export default function HomeScreen({ navigation }) {
           placeholderTextColor="#ccc"
           value={keyword}
           onChangeText={(text) => setKeyword(text)}
-        />
+          />
         <Icon
           style={{ padding: 10 }}
           onPress={handlePress}
           name="close"
           size={22}
           color="#ccc"
-        />
+          />
         <TouchableOpacity style={styles.searchIcon} onPress={handleUrl}>
           <AntDesign name="search1" size={24} color="#ccc" />
         </TouchableOpacity>
@@ -114,33 +135,36 @@ export default function HomeScreen({ navigation }) {
       <View style={styles.buttoncon}>
         <TouchableOpacity
           onPress={moviesListComingUp}
-          style={styles.buttonfetch}
-        >
+          style={[styles.buttonfetch, comingUpPressed && styles.buttonfetchactived]} // jos boolean true nii fetchactivated
+          >
           <Text style={styles.buttonText}>Tulossa</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={moviesListTrending}
-          style={styles.buttonfetch}
+          style={[styles.buttonfetch, Trendingpressed && styles.buttonfetchactived]} // jos boolean true nii fetchactivated
           >
           <Text style={styles.buttonText}>Suositut</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={moviesListTopRated}
-          style={styles.buttonfetch}
-        >
+          style={[styles.buttonfetch, pressed && styles.buttonfetchactived]} // jos boolean true nii fetchactivated
+          >
           <Text style={styles.buttonText}>Parhaimmat</Text>
         </TouchableOpacity>
       </View>
+
       {!loading ? (
         <Card movies={movies} navigation={navigation}></Card>
       ) : (
         <ActivityIndicator
-          size="large"
-          color="#fff"
-          style={{ marginTop: 100 }}
+        size="large"
+        color="#fff"
+        style={{ marginTop: 100 }}
         />
       )}
     </View>
+      </ScrollView>
+      </>
   );
 }
 
@@ -178,6 +202,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 10,
   },
+  buttonfetchactived: {
+    borderRadius: 5,
+    borderColor: "green",
+    borderWidth: 1,
+    backgroundColor: "#333",
+    color: "#fff",
+    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
+  },
   buttonText: {
     color: "#ccc",
   },
@@ -197,5 +232,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: "#ccc",
+    
   },
 });

@@ -9,8 +9,6 @@ const fetchTrendingMovies = async () => {
   try {
     const res = await fetch(`${URL}/trending/movie/week?${APIANDKEY}`);
     const result = await res.json();
-    console.log("afdlaksdladklsakl")
-    console.log(result.results)
     return result.results; 
   } catch (error) {
     console.log("Error fetching trending movies:", error);
