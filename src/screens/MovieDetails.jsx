@@ -12,6 +12,7 @@ import {
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView, useSafeAreaFrame } from "react-native-safe-area-context";
 import fetchMovieById from "../apiCalls/fetchMovieById";
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 export default function MovieDetails({ navigation, route }) {
   const { movieId } = route.params; // sama nimi ku lähetettäessä
@@ -37,13 +38,27 @@ export default function MovieDetails({ navigation, route }) {
     : null;
   return (
     <View style={styles.container}>
+        <ScrollView>
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.goBack()}
       >
         <Text style={styles.buttonText}>Takaisin</Text>
       </TouchableOpacity>
-      <ScrollView>
+      <TouchableOpacity
+        style={styles.favoritenadwatchlistbutton}
+        onPress={() => navigation.goBack()}
+      >
+        <AntDesign name="plus" size={24} color="white" style={{paddingRight:10}}/>
+        <Text style={styles.buttonwatclistText}>Lisää katselulistalle</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.favoritenadwatchlistbutton}
+        onPress={() => navigation.goBack()}
+      >
+        <AntDesign name="star" size={24} color="gold" style={{paddingRight:10}}/>
+        <Text style={styles.buttonwatclistText}>Lisää suosikkeihin</Text>
+      </TouchableOpacity>
         <View style={styles.moviecontainer}>
           <Text style={styles.title}>{movie.title}</Text>
           <ImageBackground
@@ -53,6 +68,7 @@ export default function MovieDetails({ navigation, route }) {
             style={styles.item}
             imageStyle={styles.image}
           />
+          
         </View>
           <Text style={styles.desc}>{movie.overview}</Text>
           <Text style={styles.desc}>Genres: {genres}</Text>
@@ -123,13 +139,26 @@ const styles = StyleSheet.create({
     backgroundColor: "#FEBE10",
     height: 50,
     justifyContent: "center",
-
+  },
+  favoritenadwatchlistbutton: {
+    flexDirection:'row',
+    marginTop:5,
+    borderRadius: 5,
+    backgroundColor: "rgba(76, 187, 23, 0.6)",
+    height: 40,
+    justifyContent:'center',
+    alignItems:'center',
   },
   buttonText: {
     textAlign: "center",
     fontSize: 24,
     fontWeight: "bold",
     color: "#333",
-    marginBottom: 10,
+  },
+  buttonwatclistText: {
+    textAlign:'center',
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "white",
   },
 });

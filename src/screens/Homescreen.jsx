@@ -70,6 +70,7 @@ export default function HomeScreen({ navigation }) {
   }
   
   const moviesListTrending = async () => {
+    // lisää css backgroundcolor siihe buttonii kun sillä hawetaan
     setTitle('Tällä hetkellä suositut elokuvat')
     let movies = await fetchTrendingMovies();
     setMovies(movies)
@@ -121,7 +122,7 @@ export default function HomeScreen({ navigation }) {
           onPress={moviesListTrending}
           style={styles.buttonfetch}
           >
-          <Text style={styles.buttonText}>Trendaavat</Text>
+          <Text style={styles.buttonText}>Suositut</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={moviesListTopRated}

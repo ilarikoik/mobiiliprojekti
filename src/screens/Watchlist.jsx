@@ -5,6 +5,11 @@ export default function Watchlist({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}> katselu Screen</Text>
+      <Text style={styles.title}> - Näkyy kaikki katselulistalle lisätyt</Text>
+      <Text style={styles.title}> - Voi poistaa katselulistalta</Text>
+      <Text style={styles.title}> - Arvioida</Text>
+      <Text style={styles.title}> - lajitella vanhimmat lisätyt</Text>
+      <Text style={styles.title}> - lajitella uusimmat lisätyt</Text>
     </View>
   );
 }

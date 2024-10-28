@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, Button, FlatList ,StyleSheet,ImageBackground,TouchableOpacity, ActivityIndicator} from "react-native";
+import { View, Text, Button, FlatList ,StyleSheet,ImageBackground,TouchableOpacity, ActivityIndicator, Alert} from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { API_KEY } from "../../config";
 
@@ -12,6 +12,7 @@ const POSTER = "https://image.tmdb.org/t/p/w500"
 const handleFavorite = () => {
     console.log('lisätty')
     // jos on jo DB nii alertti joku viesti
+    Alert.alert('Lisätty suosikkeihin')
 
 }
 // eli lähetä api LeffaSivu komponentille id:llä? ja se näyttää siellä vaa sen tiedot sit ?
@@ -27,7 +28,7 @@ const handleFavorite = () => {
     data={movies}
     keyExtractor={item => item.id.toString() }
     renderItem={({item}) => (
-        <TouchableOpacity onLongPress={() => details(item.id)}>
+        <TouchableOpacity onPress={() => details(item.id)}>
         <ImageBackground
             source={{ uri: `${POSTER}${item.poster_path || item.backdrop_path}` }} 
             style={styles.item}
@@ -38,6 +39,12 @@ const handleFavorite = () => {
           onPress={handleFavorite}
           >
           <AntDesign name="star" size={26} color="gold" />
+        </TouchableOpacity> 
+            <TouchableOpacity
+          style={styles.favorite}
+          onPress={() => Alert.alert('lisätty katselulistalle')}
+          >
+          <AntDesign name="plus" size={26} color="white" style={{backgroundColor:"#00000080"}} />
         </TouchableOpacity> 
         </ImageBackground>
     </TouchableOpacity>
@@ -58,6 +65,7 @@ const styles = StyleSheet.create({
       alignItems:'center',
       justifyContent:'center',
       paddingBottom:30,
+      paddingTop:10,
     },
     item: {
         height:270,

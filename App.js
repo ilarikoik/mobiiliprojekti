@@ -6,6 +6,7 @@ import HomeScreen from './src/screens/Homescreen';
 import Watchlist from './src/screens/Watchlist';
 import MovieDetails from './src/screens/MovieDetails';
 import Maps from './src/components/Maps';
+import Favorites from './src/screens/Favorites';
 
 
 const Stack = createStackNavigator();
@@ -48,7 +49,8 @@ export default function App() {
         {/* omat stäkit jos on monimutkane navigointi muute samaa vaa  */}
         <Drawer.Screen name="Leffa" component={StackNavigator} />
         <Drawer.Screen name="Katselulista" component={Watchlist} />
-        {/* <Drawer.Screen name="Details" component={MovieDetails} /> */}
+        <Drawer.Screen name="Suosikit" component={Favorites} />
+        {/* <Drawer.Screen name="Details" component={MovieDetails} /> ei tarttee täällä koska on stackissa, aiheuttaa vaa turhia erroreita */}
         <Drawer.Screen name="Teatterit" component={Maps} />
       </Drawer.Navigator>
     </NavigationContainer>
