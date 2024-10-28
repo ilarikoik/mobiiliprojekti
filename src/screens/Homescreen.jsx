@@ -1,56 +1,96 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet ,Button,ActivityIndicator,Keyboard} from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  ActivityIndicator,
+  Keyboard,
+  Alert,
+} from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { AntDesign } from "@expo/vector-icons";
-import Card from "../components/Card"; 
+import Card from "../components/Card";
 import Fetch from "../components/Fetch";
-import { API_KEY, BASE_URL,SEARCH_URL, APIANDKEY } from "../../config";
+import { API_KEY, BASE_URL, SEARCH_URL, APIANDKEY } from "../../config";
+import Icon from "react-native-vector-icons/AntDesign";
 import FetchUpcomingMovies from "../apiCalls/FetchUpcomingMovies";
 import fetchMovieByName from "../apiCalls/FetchMovieByName";
-import Icon from 'react-native-vector-icons/AntDesign';
+import fetchTopRatedMovies from "../apiCalls/fetchTopRatedMovies";
+import fetchUpcomingMovies from "../apiCalls/FetchUpcomingMovies";
+import fetchTrendingMovies from "../apiCalls/trendingMovies";
+
 
 export default function HomeScreen({ navigation }) {
-  const [movies,setMovies] = useState([]);
-  const [keyword,setKeyword] = useState(''); 
+  const [movies, setMovies] = useState([]);
+  const [keyword, setKeyword] = useState("");
+  const [title, setTitle] = useState("");
   const [url, setUrl] = useState(`${BASE_URL}${API_KEY}`); // voi poistaa?
   const [loading, setLoading] = useState(false);
 
-  
   // muista await ja async aina näissä !
-  const handleUrl =  async() => {
-    if(keyword.length > 0) {
-      setLoading(true)
-      const movie = await fetchMovieByName(keyword)
-      setMovies(movie)
-      setLoading(false)
+  const handleUrl = async () => {
+    if (keyword.length > 0) {
+      setLoading(true);
+      const movie = await fetchMovieByName(keyword);
+      setMovies(movie);
+      setTitle(`Elokuvat haulla: ${keyword}`)
+      setLoading(false);
       // setKeyword('')
       Keyboard.dismiss();
     }
     // haettaessa tyhjää palauttaa UpComingMovies
-    if(keyword.length === 0) {
-      setLoading(true)
+    if (keyword.length === 0) {
+      setLoading(true);
       const trendingMovies = await FetchUpcomingMovies();
-      setMovies(trendingMovies)
-      setLoading(false)
+      setMovies(trendingMovies);
+      setLoading(false);
     }
-  }
+  };
 
+  // tulevat leffat, jos hakusana poisetetaan niin hakee myös silloin tulevat
   useEffect(() => {
     const getUpcoming = async () => {
-      setLoading(true)
-      const upComing = await FetchUpcomingMovies();
-      setMovies(upComing)
-      console.log(upComing)
-      setLoading(false)
-    }
+      setLoading(true);
+      let showMovies;
+      showMovies = await FetchUpcomingMovies();
+      setMovies(showMovies);
+      console.log(showMovies);
+      setLoading(false);
+    };
     getUpcoming();
-  },[keyword.length === 0])
+    setTitle("Tulossa");
 
+  }, [keyword.length === 0]);
+
+  const moviesListTopRated = async () => {
+    setTitle('Parhaiten arvioidut elokuvat')
+    let movies = await fetchTopRatedMovies();
+    setMovies(movies)
+  }
   
+  const moviesListTrending = async () => {
+    setTitle('Tällä hetkellä suositut elokuvat')
+    let movies = await fetchTrendingMovies();
+    setMovies(movies)
+  }
+  const moviesListComingUp = async () => {
+    setTitle('Tulossa elokuviin')
+    let movies = await fetchUpcomingMovies();
+    setMovies(movies)
+  }
+
+  const handlePress = () => {
+    setKeyword("");
+    setTitle("Tulossa");
+    Keyboard.dismiss()
+  };
   // nagivation propsina fetchille ja sieltä cardille , pitää kulkea "ylhäätlä" alaspäin aina tämmösissä ilmeisesti
   return (
     <View style={styles.container}>
-      <Text style={styles.h1text}>{keyword.length < 1 ? 'Tulossa' : `Elokuvat haulla: ${keyword}`}</Text>
+      <Text style={styles.h1text}>
+        {title}
+      </Text>
       <View style={styles.searchcontainer}>
         <TextInput
           style={styles.search}
@@ -59,15 +99,46 @@ export default function HomeScreen({ navigation }) {
           value={keyword}
           onChangeText={(text) => setKeyword(text)}
         />
-       <Icon style={{padding:10,}} onPress={() => setKeyword('')} name="close" size={22} color="#ccc" />
-        <TouchableOpacity
-          style={styles.searchIcon}
-          onPress={handleUrl}
-        >
+        <Icon
+          style={{ padding: 10 }}
+          onPress={handlePress}
+          name="close"
+          size={22}
+          color="#ccc"
+        />
+        <TouchableOpacity style={styles.searchIcon} onPress={handleUrl}>
           <AntDesign name="search1" size={24} color="#ccc" />
         </TouchableOpacity>
       </View>
-      {!loading ? (<Card movies={movies} navigation={navigation}></Card>) : (<ActivityIndicator size="large" color="#fff"style={{marginTop:100,}} />)}
+      <View style={styles.buttoncon}>
+        <TouchableOpacity
+          onPress={moviesListComingUp}
+          style={styles.buttonfetch}
+        >
+          <Text style={styles.buttonText}>Tulossa</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={moviesListTrending}
+          style={styles.buttonfetch}
+          >
+          <Text style={styles.buttonText}>Trendaavat</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={moviesListTopRated}
+          style={styles.buttonfetch}
+        >
+          <Text style={styles.buttonText}>Parhaimmat</Text>
+        </TouchableOpacity>
+      </View>
+      {!loading ? (
+        <Card movies={movies} navigation={navigation}></Card>
+      ) : (
+        <ActivityIndicator
+          size="large"
+          color="#fff"
+          style={{ marginTop: 100 }}
+        />
+      )}
     </View>
   );
 }
@@ -79,7 +150,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#333",
   },
   searchcontainer: {
-    width: "90%",  
+    width: "90%",
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#333",
@@ -88,19 +159,40 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     height: 50,
   },
+  buttoncon: {
+    width: "90%",
+    flexDirection: "row",
+    backgroundColor: "#333",
+    justifyContent: "space-around",
+    marginTop: 15,
+  },
+  buttonfetch: {
+    borderRadius: 5,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    backgroundColor: "#333",
+    color: "#fff",
+    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
+  },
+  buttonText: {
+    color: "#ccc",
+  },
   search: {
-    flex: 1,  
+    flex: 1,
     height: "100%",
     backgroundColor: "#333",
-    margin:10,
+    margin: 10,
     color: "#fff",
   },
   searchIcon: {
-    padding:10,
+    padding: 10,
   },
   h1text: {
     marginTop: 10,
-    marginBottom: 20,
+    marginBottom: 5,
     fontSize: 24,
     fontWeight: "bold",
     color: "#ccc",
