@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, Button, FlatList ,StyleSheet,ImageBackground,TouchableOpacity, ActivityIndicator, Alert} from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { API_KEY } from "../../config";
@@ -9,24 +9,28 @@ const [movieId,setMovieId] = useState();
 const POSTER = "https://image.tmdb.org/t/p/w500"
 // const movieUrl = `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`
 
+const [movieList, setMovieList] = useState([])
+useEffect(() => {
+  setMovieList(movies)
+},[movies])
+
 const handleFavorite = () => {
     console.log('lisätty')
     // jos on jo DB nii alertti joku viesti
     Alert.alert('Lisätty suosikkeihin')
-
 }
 // eli lähetä api LeffaSivu komponentille id:llä? ja se näyttää siellä vaa sen tiedot sit ?
     const details = (itemId) => {
         setMovieId(itemId);
         // kun vastaanotetaan propsi pitää käyttää tätä annettua nimeä
-        console.log(itemId)
         navigation.navigate('Details',{movieId: itemId})
     }
+
   return (
   <View style={styles.container}>
     <FlatList
-    data={movies}
-    keyExtractor={item => item.id.toString() }
+    data={movieList}
+    keyExtractor={item => item.id}
     renderItem={({item}) => (
         <TouchableOpacity onPress={() => details(item.id)}>
         <ImageBackground

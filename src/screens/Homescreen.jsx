@@ -26,10 +26,12 @@ export default function HomeScreen({ navigation }) {
   const [keyword, setKeyword] = useState("");
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState(`${BASE_URL}${API_KEY}`); // voi poistaa?
+  const [page,setPage] = useState(1)
   const [loading, setLoading] = useState(false);
   const [pressed, setPressed] = useState(false);
   const [comingUpPressed, setComingUpPressed] = useState(false);
   const [Trendingpressed, setTrendingPressed] = useState(false);
+  // const page usestate (1) ja aina fetchmore butonia klikatessa page =+1 
 
   // muista await ja async aina näissä !
   const handleUrl = async () => {
@@ -56,7 +58,7 @@ export default function HomeScreen({ navigation }) {
     const getUpcoming = async () => {
       setLoading(true);
       let showMovies;
-      showMovies = await FetchUpcomingMovies();
+      showMovies = await FetchUpcomingMovies(page);
       setMovies(showMovies);
       console.log(showMovies);
       setLoading(false);
@@ -93,7 +95,7 @@ export default function HomeScreen({ navigation }) {
     toggleThemes();
     setComingUpPressed((prevPressed) => !prevPressed);
     setTitle('Tulossa elokuviin')
-    let movies = await fetchUpcomingMovies();
+    let movies = await fetchUpcomingMovies(1);
     setMovies(movies)
   }
 
@@ -103,6 +105,15 @@ export default function HomeScreen({ navigation }) {
     setTitle("Tulossa");
     Keyboard.dismiss()
   };
+
+  const loadMore = async () => {
+    // Alert.alert('toimii' + page)
+    setPage((prevPage) => prevPage +1);
+    let moreMovies = await fetchUpcomingMovies(page);
+    console.log(moreMovies)
+    setMovies(prevMovies => [...prevMovies, ...moreMovies])
+    // ...prevMovies eli mitä siellä listassa atm on , ...moreMovies on uus array ja "..."toiminto purkaa arrayn ja lisää jokasen itmemin listaan vähänkuin loop
+  }
   // nagivation propsina fetchille ja sieltä cardille , pitää kulkea "ylhäätlä" alaspäin aina tämmösissä ilmeisesti
   
   // jos hajoo niin koska scrollview ja flatlist samassa? vissii ei kannata olla
@@ -113,6 +124,7 @@ export default function HomeScreen({ navigation }) {
       <Text style={styles.h1text}>
         {title}
       </Text>
+      
       <View style={styles.searchcontainer}>
         <TextInput
           style={styles.search}
@@ -162,7 +174,13 @@ export default function HomeScreen({ navigation }) {
         style={{ marginTop: 100 }}
         />
       )}
-    </View>
+    <TouchableOpacity
+          onPress={loadMore}
+          style={styles.buttonfetchmore} // jos boolean true nii fetchactivated
+          >
+          <Text style={styles.fetchMoreText}>Lisää elokuvia</Text>
+        </TouchableOpacity>
+            </View>
       </ScrollView>
       </>
   );
@@ -173,6 +191,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     backgroundColor: "#333",
+    paddingBottom:50,
   },
   searchcontainer: {
     width: "90%",
@@ -201,6 +220,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 10,
+  },
+  buttonfetchmore: {
+    borderRadius: 5,
+    borderColor: "#333",
+    borderWidth: 1,
+    backgroundColor: "gold",
+    color: "#ccc",
+    width:300,
+    height:40,
+    justifyContent:'center',
   },
   buttonfetchactived: {
     borderRadius: 5,
@@ -232,6 +261,13 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: "#ccc",
-    
+  },
+  fetchMoreText: {
+    textAlign:'center',
+    marginTop: 10,
+    marginBottom: 5,
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#333",
   },
 });

@@ -4,10 +4,11 @@ import { useState, useEffect } from "react";
 
 import { APIANDKEY, URL } from "../../config"; // Ensure the path is correct
 
-const fetchUpcomingMovies = async () => {
+const fetchUpcomingMovies = async (page) => {
 
+  // `${URL}/movie/upcoming?${APIANDKEY}&page${page}` // page tulee parametrinä joka päivittyy homescrrenissä aina ku halutaa lataa lisää leffaoja 
   try {
-    const res = await fetch(`${URL}/movie/upcoming?${APIANDKEY}`);
+    const res = await fetch(`${URL}/movie/upcoming?${APIANDKEY}&page=${page}`);
     const result = await res.json();
     return result.results; // Adjust this based on the actual API response structure
   } catch (error) {a
@@ -22,4 +23,4 @@ const fetchUpcomingMovies = async () => {
 export default fetchUpcomingMovies; // Default export
 
 
-  // "https://api.themoviedb.org/3/movie/upcoming?api_key="
+  // "https://api.themoviedb.org/3/movie/upcoming?api_key=56c4fbb22fb2085dfd77610e1689a704"
