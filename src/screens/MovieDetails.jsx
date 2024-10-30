@@ -12,7 +12,7 @@ import {
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView, useSafeAreaFrame } from "react-native-safe-area-context";
 import fetchMovieById from "../apiCalls/fetchMovieById";
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import AntDesign from "react-native-vector-icons/AntDesign";
 
 export default function MovieDetails({ navigation, route }) {
   const { movieId } = route.params; // sama nimi ku lähetettäessä
@@ -36,29 +36,43 @@ export default function MovieDetails({ navigation, route }) {
   const genres = movie.genres
     ? movie.genres.map((item) => item.name).join(", ")
     : null;
+
+  const toMaps = () => {
+    navigation.navigate("Maps", { fromDetails: "jep" });
+  };
   return (
     <View style={styles.container}>
-        <ScrollView>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.goBack()}
-      >
-        <Text style={styles.buttonText}>Takaisin</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.favoritenadwatchlistbutton}
-        onPress={() => navigation.goBack()}
-      >
-        <AntDesign name="plus" size={24} color="white" style={{paddingRight:10}}/>
-        <Text style={styles.buttonwatclistText}>Lisää katselulistalle</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.favoritenadwatchlistbutton}
-        onPress={() => navigation.goBack()}
-      >
-        <AntDesign name="star" size={24} color="gold" style={{paddingRight:10}}/>
-        <Text style={styles.buttonwatclistText}>Lisää suosikkeihin</Text>
-      </TouchableOpacity>
+      <ScrollView>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={styles.buttonText}>Takaisin</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.favoritenadwatchlistbutton}
+          onPress={() => navigation.goBack()}
+        >
+          <AntDesign
+            name="plus"
+            size={24}
+            color="white"
+            style={{ paddingRight: 10 }}
+          />
+          <Text style={styles.buttonwatclistText}>Lisää katselulistalle</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.favoritenadwatchlistbutton}
+          onPress={() => navigation.goBack()}
+        >
+          <AntDesign
+            name="star"
+            size={24}
+            color="gold"
+            style={{ paddingRight: 10 }}
+          />
+          <Text style={styles.buttonwatclistText}>Lisää suosikkeihin</Text>
+        </TouchableOpacity>
         <View style={styles.moviecontainer}>
           <Text style={styles.title}>{movie.title}</Text>
           <ImageBackground
@@ -68,20 +82,20 @@ export default function MovieDetails({ navigation, route }) {
             style={styles.item}
             imageStyle={styles.image}
           />
-          
         </View>
-          <Text style={styles.desc}>{movie.overview}</Text>
-          <Text style={styles.desc}>Genres: {genres}</Text>
-          <Text style={styles.desc}>
-            country: {movie.origin_country} - show on map {"-->"}
-          </Text>
-          <Text style={styles.desc}>
-            avg vote: {movie.vote_average.toFixed(1)} - vote count: {movie.vote_count}
-          </Text>
-          <Text style={styles.desc}>Release date: {movie.release_date}</Text>
-          <TouchableOpacity style={styles.theatherbutton}>
+        <Text style={styles.desc}>{movie.overview}</Text>
+        <Text style={styles.desc}>Genres: {genres}</Text>
+        <Text style={styles.desc}>
+          country: {movie.origin_country} - show on map {"-->"}
+        </Text>
+        <Text style={styles.desc}>
+          avg vote: {movie.vote_average.toFixed(1)} - vote count:{" "}
+          {movie.vote_count}
+        </Text>
+        <Text style={styles.desc}>Release date: {movie.release_date}</Text>
+        <TouchableOpacity onPress={toMaps} style={styles.theatherbutton}>
           <Text style={styles.buttonText}>Lähimmät teatterit !</Text>
-          </TouchableOpacity>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
@@ -119,10 +133,10 @@ const styles = StyleSheet.create({
   theatherbutton: {
     borderRadius: 10,
     backgroundColor: "#ccc",
-    padding:10,
+    padding: 10,
     opacity: 0.7,
-    width:300,
-    alignSelf:'center',
+    width: 300,
+    alignSelf: "center",
   },
   item: {
     height: 400,
@@ -141,13 +155,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   favoritenadwatchlistbutton: {
-    flexDirection:'row',
-    marginTop:5,
+    flexDirection: "row",
+    marginTop: 5,
     borderRadius: 5,
     backgroundColor: "rgba(76, 187, 23, 0.6)",
     height: 40,
-    justifyContent:'center',
-    alignItems:'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   buttonText: {
     textAlign: "center",
@@ -156,7 +170,7 @@ const styles = StyleSheet.create({
     color: "#333",
   },
   buttonwatclistText: {
-    textAlign:'center',
+    textAlign: "center",
     fontSize: 24,
     fontWeight: "bold",
     color: "white",

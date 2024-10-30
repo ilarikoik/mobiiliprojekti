@@ -1,13 +1,12 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from './src/screens/Homescreen'; 
-import Watchlist from './src/screens/Watchlist';
-import MovieDetails from './src/screens/MovieDetails';
-import Maps from './src/components/Maps';
-import Favorites from './src/screens/Favorites';
-
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { createStackNavigator } from "@react-navigation/stack";
+import HomeScreen from "./src/screens/Homescreen";
+import Watchlist from "./src/screens/Watchlist";
+import MovieDetails from "./src/screens/MovieDetails";
+import Maps from "./src/components/Maps";
+import Favorites from "./src/screens/Favorites";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -17,30 +16,31 @@ const StackNavigator = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Leffa" component={HomeScreen} />
       <Stack.Screen name="Details" component={MovieDetails} />
+      <Stack.Screen name="Maps" component={Maps} />
     </Stack.Navigator>
   );
 };
 
-// teksti '#ccc', 
+// teksti '#ccc',
 // tausta '#333'
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Drawer.Navigator 
+      <Drawer.Navigator
         initialRouteName="Leffa"
         screenOptions={{
           drawerStyle: {
-            backgroundColor: '#333', 
-            width: 240, 
+            backgroundColor: "#333",
+            width: 240,
           },
           drawerLabelStyle: {
-            color: '#ccc', 
+            color: "#ccc",
           },
           headerStyle: {
-            backgroundColor: '#444', 
+            backgroundColor: "#444",
           },
-          headerTintColor: '#ccc', 
+          headerTintColor: "#ccc",
         }}
       >
         {/* burgeri menu / "päämenu" , stackilla kuljetaan ohjelman sisällä eri sivuille */}

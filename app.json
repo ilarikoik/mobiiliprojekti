@@ -2,6 +2,20 @@
   "expo": {
     "name": "leffa",
     "slug": "leffa",
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow Leffa to use your location."
+        }
+      ]
+    ],
+    "ios": {
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Sovellus tarvitsee luvan sijainnin käyttämiseen.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Sovellus tarvitsee luvan sijainnin käyttämiseen myös silloin, kun se ei ole käytössä."
+      }
+    }
   }
 }
