@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Button, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import MapView from "react-native-maps";
 import { Marker } from "react-native-maps";
 import * as Location from "expo-location";
@@ -71,7 +78,7 @@ export default function Maps({ navigation, route }) {
           );
         })}
       </MapView>
-      {fromDetails && (
+      {fromDetails ? (
         <View style={styles.titlecon}>
           <TouchableOpacity
             style={styles.backbutton}
@@ -80,7 +87,15 @@ export default function Maps({ navigation, route }) {
             <Text style={styles.title}>Takaisin</Text>
           </TouchableOpacity>
         </View>
-      )}
+      ) : fromDetails === null ? (
+        <View style={styles.titlecon}>
+          <ActivityIndicator
+            size="large"
+            color="#fff"
+            style={{ marginTop: 100 }}
+          />
+        </View>
+      ) : null}
     </View>
   );
 }
