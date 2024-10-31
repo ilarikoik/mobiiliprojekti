@@ -33,13 +33,16 @@ export default function HomeScreen({ navigation }) {
   const [keyword, setKeyword] = useState("");
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState(`${BASE_URL}${API_KEY}`); // voi poistaa?
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(2);
   const [genrePage, setGenrePage] = useState(1);
+  const [trendingPage, setTrendingPage] = useState(1);
+  const [topPage, setTopPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [pressed, setPressed] = useState(false);
   const [comingUpPressed, setComingUpPressed] = useState(false);
   const [Trendingpressed, setTrendingPressed] = useState(false);
   const [genresPressed, setGenresPressed] = useState(false);
+  const [genreActivated, setGenreActivated] = useState(false);
   const [showGenres, setShowGenres] = useState([]);
   const [searchByGenre, setSearchByGenre] = useState();
 
@@ -68,6 +71,7 @@ export default function HomeScreen({ navigation }) {
   useEffect(() => {
     const getUpcoming = async () => {
       setLoading(true);
+      setComingUpPressed(true);
       let showMovies;
       showMovies = await FetchUpcomingMovies(1);
       setMovies(showMovies);
@@ -91,7 +95,8 @@ export default function HomeScreen({ navigation }) {
     setPressed((prevPressed) => !prevPressed); // muutetaan true jotta style näkyy
     console.log(pressed);
     setTitle("Parhaiten arvioidut elokuvat");
-    let movies = await fetchTopRatedMovies();
+    let movies = await fetchTopRatedMovies(1);
+    setTopPage(2);
     setMovies(movies);
   };
 
@@ -99,7 +104,8 @@ export default function HomeScreen({ navigation }) {
     toggleThemes();
     setTrendingPressed((prevPressed) => !prevPressed);
     setTitle("Tällä hetkellä suositut elokuvat");
-    let movies = await fetchTrendingMovies();
+    let movies = await fetchTrendingMovies(1); // lataa aina ekan sivun ku ettii "suositut"
+    setTrendingPage(2); // asetetaa valmiiks seuraava sivu ja sitte kun ladataa lisää sen jälkee nostetaa ku muute ei kerkee päivittyy tai jtn
     console.log(movies);
     setMovies(movies);
   };
@@ -112,7 +118,7 @@ export default function HomeScreen({ navigation }) {
   };
   const genres = async () => {
     toggleThemes();
-    setGenresPressed((prevPressed) => !prevPressed);
+    setGenreActivated((prevPressed) => !prevPressed);
     getGenres(); // klikatessa tekee fetchin genreille
   };
 
@@ -121,7 +127,6 @@ export default function HomeScreen({ navigation }) {
     try {
       const genret = await fetchMovieGenres();
       setShowGenres(genret);
-      console.log("HHAAA" + JSON.stringify(genres));
     } catch (error) {
       console.log("ERRR" + error);
     } finally {
@@ -130,14 +135,16 @@ export default function HomeScreen({ navigation }) {
 
   const handleGenreSelect = async (genreId) => {
     // anneta propsina tää funktio ja se asettaa siellä klikatun ID tohon muuttujaa
+    setGenresPressed(true); // pitää olla true (vihree border) että loadMore hakee oikein
     setSearchByGenre(genreId);
-    setGenresPressed(false);
+    setGenreActivated(false); // sulkee menun
     console.log("Selected genre ID:", genreId);
     getByGenre(genreId, genrePage);
   };
 
   const getByGenre = async (genreId, genrePage) => {
-    let movies = await fetchMoviesByGenre(genreId, genrePage);
+    let movies = await fetchMoviesByGenre(genreId, 1);
+    setGenrePage(2);
     console.log("Fetched movies:", JSON.stringify(movies));
     setMovies(movies);
   };
@@ -145,15 +152,28 @@ export default function HomeScreen({ navigation }) {
   const handlePress = () => {
     setKeyword("");
     setTitle("Tulossa elokuviin");
+    toggleThemes();
     setGenresPressed(false);
     Keyboard.dismiss();
   };
 
   const loadMore = async () => {
-    setPage((prevPage) => prevPage + 1);
-    let moreMovies = await fetchUpcomingMovies(page);
-    console.log(moreMovies);
+    let moreMovies = [];
+    if (comingUpPressed) {
+      setPage((prevPage) => prevPage + 1);
+      moreMovies = await fetchUpcomingMovies(page);
+    } else if (genresPressed) {
+      moreMovies = await fetchMoviesByGenre(searchByGenre, genrePage);
+      setGenrePage((prevPage) => prevPage + 1);
+    } else if (Trendingpressed) {
+      moreMovies = await fetchTrendingMovies(trendingPage);
+      setTrendingPage((prevPage) => prevPage + 1);
+    } else if (pressed) {
+      moreMovies = await fetchTopRatedMovies(topPage);
+      setTopPage((prevPage) => prevPage + 1);
+    }
     setMovies((prevMovies) => [...prevMovies, ...moreMovies]);
+    //togglessa määriteelty muuttujat ne aina muuttaa tilaa ku searchbuttoneita painetaa niin niidenperusteella lisää elokuvia hakuja?
     // ...prevMovies eli mitä siellä listassa atm on , ...moreMovies on uus array ja "..."toiminto purkaa arrayn ja lisää jokasen itmemin listaan vähänkuin loop
   };
 
@@ -218,7 +238,7 @@ export default function HomeScreen({ navigation }) {
               <Text style={styles.buttonText}>Genret</Text>
             </TouchableOpacity>
           </View>
-          {genresPressed && (
+          {genreActivated && (
             <View style={styles.menucontainer}>
               <MenuProvider>
                 <PopUpMenu

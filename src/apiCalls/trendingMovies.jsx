@@ -4,9 +4,11 @@ import { useState, useEffect } from "react";
 
 import { APIANDKEY, URL } from "../../config"; // Ensure the path is correct
 
-const fetchTrendingMovies = async () => {
+const fetchTrendingMovies = async (page) => {
   try {
-    const res = await fetch(`${URL}/trending/movie/week?${APIANDKEY}`);
+    const res = await fetch(
+      `${URL}/trending/movie/week?${APIANDKEY}&page=${page}`
+    );
     const result = await res.json();
     console.log("HHHHALALLLA");
     return result.results;
