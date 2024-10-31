@@ -23,6 +23,9 @@ import fetchMovieByName from "../apiCalls/FetchMovieByName";
 import fetchTopRatedMovies from "../apiCalls/fetchTopRatedMovies";
 import fetchUpcomingMovies from "../apiCalls/FetchUpcomingMovies";
 import fetchTrendingMovies from "../apiCalls/trendingMovies";
+import fetchMovieGenres from "../apiCalls/fetchMovieGenres";
+import PopUpMenu from "../components/PopUpMenu";
+import { Menu, MenuProvider } from "react-native-popup-menu";
 
 export default function HomeScreen({ navigation }) {
   const [movies, setMovies] = useState([]);
@@ -34,7 +37,9 @@ export default function HomeScreen({ navigation }) {
   const [pressed, setPressed] = useState(false);
   const [comingUpPressed, setComingUpPressed] = useState(false);
   const [Trendingpressed, setTrendingPressed] = useState(false);
-  // const page usestate (1) ja aina fetchmore butonia klikatessa page =+1
+  const [genresPressed, setGenresPressed] = useState(false);
+  const [showGenres, setShowGenres] = useState([]);
+  const [searchByGenre, setSearchByGenre] = useState();
 
   // muista await ja async aina näissä !
   const searchMvoies = async () => {
@@ -42,6 +47,7 @@ export default function HomeScreen({ navigation }) {
       toggleThemes();
       setLoading(true);
       const movie = await fetchMovieByName(keyword);
+      // jos palautaa tyhjää niin sitten hae fetchMovieByActor(keyword)?
       setMovies(movie);
       setTitle(`Elokuvat haulla: ${keyword}`);
       setLoading(false);
@@ -75,6 +81,7 @@ export default function HomeScreen({ navigation }) {
     setComingUpPressed(false);
     setTrendingPressed(false);
     setPressed(false);
+    setGenresPressed(false);
   };
 
   const moviesListTopRated = async () => {
@@ -91,6 +98,7 @@ export default function HomeScreen({ navigation }) {
     setTrendingPressed((prevPressed) => !prevPressed);
     setTitle("Tällä hetkellä suositut elokuvat");
     let movies = await fetchTrendingMovies();
+    console.log(movies);
     setMovies(movies);
   };
   const moviesListComingUp = async () => {
@@ -99,6 +107,30 @@ export default function HomeScreen({ navigation }) {
     setTitle("Tulossa elokuviin");
     let movies = await fetchUpcomingMovies(1);
     setMovies(movies);
+  };
+  const genres = async () => {
+    toggleThemes();
+    setGenresPressed((prevPressed) => !prevPressed);
+    getGenres(); // klikatessa tekee fetchin genreille
+  };
+
+  const getGenres = async () => {
+    // fetch kaikki genret ja ne annetaan propsina PopUpMenulle
+    try {
+      const genret = await fetchMovieGenres();
+      setShowGenres(genret);
+      console.log("HHAAA" + JSON.stringify(genres));
+    } catch (error) {
+      console.log("ERRR" + error);
+    } finally {
+    }
+  };
+
+  const handleGenreSelect = (genreName) => {
+    // anneta propsina tää funktio ja se asettaa siellä klikatun tohon muuttujaa
+    setSearchByGenre(genreName);
+    console.log("TOIMIIII", searchByGenre);
+    setGenresPressed(false); // sulkee ikkunan
   };
 
   const handlePress = () => {
@@ -114,6 +146,7 @@ export default function HomeScreen({ navigation }) {
     setMovies((prevMovies) => [...prevMovies, ...moreMovies]);
     // ...prevMovies eli mitä siellä listassa atm on , ...moreMovies on uus array ja "..."toiminto purkaa arrayn ja lisää jokasen itmemin listaan vähänkuin loop
   };
+
   // jos hajoo niin koska scrollview ja flatlist samassa? vissii ei kannata olla
   return (
     <>
@@ -165,8 +198,26 @@ export default function HomeScreen({ navigation }) {
             >
               <Text style={styles.buttonText}>Parhaimmat</Text>
             </TouchableOpacity>
+            <TouchableOpacity
+              onPress={genres}
+              style={[
+                styles.buttonfetch,
+                genresPressed && styles.buttonfetchactived,
+              ]}
+            >
+              <Text style={styles.buttonText}>Genret</Text>
+            </TouchableOpacity>
           </View>
-
+          {genresPressed && (
+            <View style={styles.menucontainer}>
+              <MenuProvider>
+                <PopUpMenu
+                  showGenres={showGenres}
+                  setSelectedGenre={handleGenreSelect}
+                />
+              </MenuProvider>
+            </View>
+          )}
           {!loading ? (
             <Card movies={movies} navigation={navigation}></Card>
           ) : (
@@ -271,5 +322,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     color: "#333",
+  },
+  menucontainer: {
+    flex: 1,
+    width: 500,
+    marginTop: 5,
+    alignContent: "center",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

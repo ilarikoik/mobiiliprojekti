@@ -2,9 +2,14 @@ import React from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
 
 export default function Watchlist({ navigation }) {
+  // käytä card komponenttia ja anna parametrinä sille numColumns={showColumns} // monta itemiä per rivi eli tähä setShowColumns(1)
+  // showsVerticalScrollIndicator={false}
   return (
     <View style={styles.container}>
       <Text style={styles.title}> katselu Screen</Text>
+      <Text style={styles.title}>
+        käytä card komponenttia ja anna parametrinä sille numColumns
+      </Text>
       <Text style={styles.title}> - Näkyy kaikki katselulistalle lisätyt</Text>
       <Text style={styles.title}> - Voi poistaa katselulistalta</Text>
       <Text style={styles.title}> - Arvioida</Text>
