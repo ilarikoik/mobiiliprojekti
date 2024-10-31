@@ -24,6 +24,7 @@ import fetchTopRatedMovies from "../apiCalls/fetchTopRatedMovies";
 import fetchUpcomingMovies from "../apiCalls/FetchUpcomingMovies";
 import fetchTrendingMovies from "../apiCalls/trendingMovies";
 import fetchMovieGenres from "../apiCalls/fetchMovieGenres";
+import fetchMoviesByGenre from "../apiCalls/fetchMoviesByGenre";
 import PopUpMenu from "../components/PopUpMenu";
 import { Menu, MenuProvider } from "react-native-popup-menu";
 
@@ -33,6 +34,7 @@ export default function HomeScreen({ navigation }) {
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState(`${BASE_URL}${API_KEY}`); // voi poistaa?
   const [page, setPage] = useState(1);
+  const [genrePage, setGenrePage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [pressed, setPressed] = useState(false);
   const [comingUpPressed, setComingUpPressed] = useState(false);
@@ -126,16 +128,24 @@ export default function HomeScreen({ navigation }) {
     }
   };
 
-  const handleGenreSelect = (genreName) => {
-    // anneta propsina tää funktio ja se asettaa siellä klikatun tohon muuttujaa
-    setSearchByGenre(genreName);
-    console.log("TOIMIIII", searchByGenre);
-    setGenresPressed(false); // sulkee ikkunan
+  const handleGenreSelect = async (genreId) => {
+    // anneta propsina tää funktio ja se asettaa siellä klikatun ID tohon muuttujaa
+    setSearchByGenre(genreId);
+    setGenresPressed(false);
+    console.log("Selected genre ID:", genreId);
+    getByGenre(genreId, genrePage);
+  };
+
+  const getByGenre = async (genreId, genrePage) => {
+    let movies = await fetchMoviesByGenre(genreId, genrePage);
+    console.log("Fetched movies:", JSON.stringify(movies));
+    setMovies(movies);
   };
 
   const handlePress = () => {
     setKeyword("");
     setTitle("Tulossa elokuviin");
+    setGenresPressed(false);
     Keyboard.dismiss();
   };
 

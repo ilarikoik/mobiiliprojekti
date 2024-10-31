@@ -41,7 +41,7 @@ export default function PopUpMenu({ showGenres, setSelectedGenre }) {
                 <MenuOption
                   key={id}
                   style={styles.item}
-                  onSelect={() => setSelectedGenre(item.name)}
+                  onSelect={() => setSelectedGenre(item.id)}
                 >
                   <Text style={styles.itemText}>{item.name}</Text>
                 </MenuOption>
