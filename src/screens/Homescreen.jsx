@@ -52,7 +52,6 @@ export default function HomeScreen({ navigation }) {
       toggleThemes();
       setLoading(true);
       const movie = await fetchMovieByName(keyword);
-      // jos palautaa tyhjää niin sitten hae fetchMovieByActor(keyword)?
       setMovies(movie);
       setTitle(`Elokuvat haulla: ${keyword}`);
       setLoading(false);

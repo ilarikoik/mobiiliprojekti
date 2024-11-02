@@ -26,7 +26,7 @@ export default function Card({ navigation, movies }) {
   const handleFavorite = () => {
     console.log("lisätty");
     // jos on jo DB nii alertti joku viesti
-    Alert.alert("Lisätty suosikkeihin");
+    Alert.alert("Lisätty suosikkeihin!");
   };
   // eli lähetä api LeffaSivu komponentille id:llä? ja se näyttää siellä vaa sen tiedot sit ?
   const details = (itemId) => {
