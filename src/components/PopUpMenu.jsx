@@ -32,7 +32,6 @@ export default function PopUpMenu({ showGenres, setSelectedGenre }) {
   // eli muista fallaback teksti
   return (
     <View style={styles.container}>
-      <Button title="aAAAA" onPress={testi}></Button>
       <MenuOptions style={styles.menucontainer}>
         <ScrollView>
           {showGenres.length > 0 ? (
@@ -61,8 +60,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   menucontainer: {
+    borderRadius: 10,
     padding: 10,
-    width: 400,
+    width: 350,
     backgroundColor: "rgba(0, 0, 0, 0.3)",
     marginTop: 5,
     alignContent: "center",
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   },
   item: {
     justifyContent: "center",
-    height: 30,
+    height: 40,
     width: 200,
     margin: 5,
     backgroundColor: "#FEBE10",

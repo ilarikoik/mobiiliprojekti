@@ -41,7 +41,10 @@ export default function Card({ navigation, movies }) {
         data={movieList}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => details(item.id)}>
+          <TouchableOpacity
+            onPress={() => details(item.id)}
+            style={styles.itemcontainer}
+          >
             <ImageBackground
               source={{
                 uri: `${POSTER}${item.poster_path || item.backdrop_path}`,
@@ -86,6 +89,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingBottom: 30,
     paddingTop: 10,
+  },
+  itemcontainer: {
+    height: 280,
+    width: 170,
+    margin: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 2, height: 4 },
+    shadowOpacity: 0.9,
+    shadowRadius: 5,
   },
   item: {
     height: 270,

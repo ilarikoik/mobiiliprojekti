@@ -187,7 +187,7 @@ export default function HomeScreen({ navigation }) {
             <TextInput
               style={styles.search}
               placeholder="Hae elokuvia"
-              placeholderTextColor="#ccc"
+              placeholderTextColor="gold"
               value={keyword}
               onChangeText={(text) => setKeyword(text)}
             />
@@ -196,10 +196,10 @@ export default function HomeScreen({ navigation }) {
               onPress={handlePress}
               name="close"
               size={22}
-              color="#ccc"
+              color="gold"
             />
             <TouchableOpacity style={styles.searchIcon} onPress={searchMvoies}>
-              <AntDesign name="search1" size={24} color="#ccc" />
+              <AntDesign name="search1" size={24} color="gold" />
             </TouchableOpacity>
           </View>
           <View style={styles.buttoncon}>
@@ -279,11 +279,16 @@ const styles = StyleSheet.create({
     width: "90%",
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#333",
+    //backgroundColor: "#333",
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
     borderRadius: 10,
-    borderColor: "#ccc",
-    borderWidth: 1,
+    //borderColor: "gold",
+    //borderWidth: 1,
     height: 50,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.9,
+    shadowRadius: 7,
   },
   buttoncon: {
     width: "90%",
@@ -291,17 +296,22 @@ const styles = StyleSheet.create({
     backgroundColor: "#333",
     justifyContent: "space-around",
     marginTop: 15,
+    marginBottom: 10,
   },
   buttonfetch: {
     borderRadius: 5,
-    borderColor: "#ccc",
+    borderColor: "rgba(0, 0, 0, 0.3)",
     borderWidth: 1,
     backgroundColor: "#333",
     color: "#fff",
     textAlign: "center",
     justifyContent: "center",
     alignItems: "center",
-    padding: 10,
+    padding: 15,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.9,
+    shadowRadius: 7,
   },
   buttonfetchmore: {
     borderRadius: 5,
@@ -315,14 +325,17 @@ const styles = StyleSheet.create({
   },
   buttonfetchactived: {
     borderRadius: 5,
-    borderColor: "green",
+    borderColor: "gold",
     borderWidth: 1,
     backgroundColor: "#333",
-    color: "#fff",
     textAlign: "center",
     justifyContent: "center",
     alignItems: "center",
-    padding: 10,
+    padding: 15,
+    shadowColor: "gold",
+    shadowOffset: { width: 2, height: 1 },
+    shadowOpacity: 0.9,
+    shadowRadius: 7,
   },
   buttonText: {
     color: "#ccc",
@@ -330,7 +343,6 @@ const styles = StyleSheet.create({
   search: {
     flex: 1,
     height: "100%",
-    backgroundColor: "#333",
     margin: 10,
     color: "#fff",
   },
@@ -342,7 +354,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     fontSize: 24,
     fontWeight: "bold",
-    color: "#ccc",
+    color: "rgba(0, 0, 0, 0.6)",
   },
   fetchMoreText: {
     textAlign: "center",

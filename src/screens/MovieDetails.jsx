@@ -47,7 +47,7 @@ export default function MovieDetails({ navigation, route }) {
           style={styles.button}
           onPress={() => navigation.goBack()}
         >
-          <Text style={styles.buttonText}>Takaisin</Text>
+          <Text style={styles.backbuttonText}>Takaisin</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.favoritenadwatchlistbutton}
@@ -75,27 +75,31 @@ export default function MovieDetails({ navigation, route }) {
         </TouchableOpacity>
         <View style={styles.moviecontainer}>
           <Text style={styles.title}>{movie.title}</Text>
-          <ImageBackground
-            source={{
-              uri: `${POSTER}${movie.poster_path || movie.backdrop_path}`,
-            }}
-            style={styles.item}
-            imageStyle={styles.image}
-          />
+          <View style={styles.postercon}>
+            <ImageBackground
+              source={{
+                uri: `${POSTER}${movie.poster_path || movie.backdrop_path}`,
+              }}
+              style={styles.item}
+              imageStyle={styles.image}
+            />
+          </View>
+          <View style={styles.movieinfocontainer}>
+            <Text style={styles.desc}>{movie.overview}</Text>
+            <Text style={styles.infos}>Genres: {genres}</Text>
+            <Text style={styles.infos}>
+              Country: {movie.origin_country} - Show on map {"-->"}
+            </Text>
+            <Text style={styles.infos}>
+              Avg vote: {movie.vote_average.toFixed(1)} & Vote count:{" "}
+              {movie.vote_count}
+            </Text>
+            <Text style={styles.infos}>Release date: {movie.release_date}</Text>
+          </View>
+          <TouchableOpacity onPress={toMaps} style={styles.theatherbutton}>
+            <Text style={styles.buttonText}>Lähimmät teatterit !</Text>
+          </TouchableOpacity>
         </View>
-        <Text style={styles.desc}>{movie.overview}</Text>
-        <Text style={styles.desc}>Genres: {genres}</Text>
-        <Text style={styles.desc}>
-          country: {movie.origin_country} - show on map {"-->"}
-        </Text>
-        <Text style={styles.desc}>
-          avg vote: {movie.vote_average.toFixed(1)} - vote count:{" "}
-          {movie.vote_count}
-        </Text>
-        <Text style={styles.desc}>Release date: {movie.release_date}</Text>
-        <TouchableOpacity onPress={toMaps} style={styles.theatherbutton}>
-          <Text style={styles.buttonText}>Lähimmät teatterit !</Text>
-        </TouchableOpacity>
       </ScrollView>
     </View>
   );
@@ -104,11 +108,12 @@ export default function MovieDetails({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: 15,
     backgroundColor: "#333",
   },
   moviecontainer: {
-    width: "95%",
+    //width: "100%",
+    width: 400,
     borderRadius: 10,
     padding: 10,
     alignContent: "center",
@@ -126,17 +131,33 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#ccc",
     marginTop: 10,
-    marginTop: 15,
     marginBottom: 15,
     fontWeight: "bold",
   },
+  infos: {
+    fontSize: 18,
+    color: "#ccc",
+    marginTop: 10,
+    marginBottom: 15,
+  },
   theatherbutton: {
     borderRadius: 10,
-    backgroundColor: "#ccc",
+    backgroundColor: "black",
     padding: 10,
-    opacity: 0.7,
     width: 300,
     alignSelf: "center",
+    shadowColor: "gold",
+    shadowOffset: { width: 2, height: 3 },
+    shadowOpacity: 0.7,
+    shadowRadius: 6,
+  },
+  postercon: {
+    height: 420,
+    width: 320,
+    shadowColor: "#000",
+    shadowOffset: { width: 7, height: 7 },
+    shadowOpacity: 0.9,
+    shadowRadius: 10,
   },
   item: {
     height: 400,
@@ -151,7 +172,7 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 5,
     backgroundColor: "#FEBE10",
-    height: 50,
+    height: 40,
     justifyContent: "center",
   },
   favoritenadwatchlistbutton: {
@@ -159,20 +180,33 @@ const styles = StyleSheet.create({
     marginTop: 5,
     borderRadius: 5,
     backgroundColor: "rgba(76, 187, 23, 0.6)",
-    height: 40,
+    height: 35,
     justifyContent: "center",
     alignItems: "center",
+  },
+  backbuttonText: {
+    textAlign: "center",
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "black",
   },
   buttonText: {
     textAlign: "center",
     fontSize: 24,
     fontWeight: "bold",
-    color: "#333",
+    color: "gold",
   },
   buttonwatclistText: {
     textAlign: "center",
     fontSize: 24,
     fontWeight: "bold",
     color: "white",
+  },
+  movieinfocontainer: {
+    marginTop: 10,
+    marginBottom: 10,
+    backgroundColor: "rgba(0, 0, 0, 0.2)",
+    borderRadius: 10,
+    padding: 5,
   },
 });
