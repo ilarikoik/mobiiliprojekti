@@ -16,6 +16,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 
 export default function MovieDetails({ navigation, route }) {
   const { movieId } = route.params; // sama nimi ku lähetettäessä
+  const { goBack } = route.params; // sama nimi ku lähetettäessä
   const [movie, setMovie] = useState();
   const POSTER = "https://image.tmdb.org/t/p/w500";
   const [loading, setLoading] = useState(false);
@@ -49,30 +50,32 @@ export default function MovieDetails({ navigation, route }) {
         >
           <Text style={styles.backbuttonText}>Takaisin</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.favoritenadwatchlistbutton}
-          onPress={() => navigation.goBack()}
-        >
-          <AntDesign
-            name="plus"
-            size={24}
-            color="white"
-            style={{ paddingRight: 10 }}
-          />
-          <Text style={styles.buttonwatclistText}>Lisää katselulistalle</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.favoritenadwatchlistbutton}
-          onPress={() => navigation.goBack()}
-        >
-          <AntDesign
-            name="star"
-            size={24}
-            color="gold"
-            style={{ paddingRight: 10 }}
-          />
-          <Text style={styles.buttonwatclistText}>Lisää suosikkeihin</Text>
-        </TouchableOpacity>
+        <View style={styles.favwatchcon}>
+          <TouchableOpacity
+            style={styles.favoritenadwatchlistbutton}
+            onPress={() => navigation.goBack()}
+          >
+            <AntDesign
+              name="plus"
+              size={16}
+              color="gold"
+              style={{ paddingRight: 10 }}
+            />
+            <Text style={styles.buttonwatclistText}>Katselulista</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.favoritenadwatchlistbutton}
+            onPress={() => navigation.goBack()}
+          >
+            <AntDesign
+              name="star"
+              size={16}
+              color="gold"
+              style={{ paddingRight: 10 }}
+            />
+            <Text style={styles.buttonwatclistText}>Suosikit</Text>
+          </TouchableOpacity>
+        </View>
         <View style={styles.moviecontainer}>
           <Text style={styles.title}>{movie.title}</Text>
           <View style={styles.postercon}>
@@ -87,9 +90,7 @@ export default function MovieDetails({ navigation, route }) {
           <View style={styles.movieinfocontainer}>
             <Text style={styles.desc}>{movie.overview}</Text>
             <Text style={styles.infos}>Genres: {genres}</Text>
-            <Text style={styles.infos}>
-              Country: {movie.origin_country} - Show on map {"-->"}
-            </Text>
+
             <Text style={styles.infos}>
               Avg vote: {movie.vote_average.toFixed(1)} & Vote count:{" "}
               {movie.vote_count}
@@ -97,7 +98,7 @@ export default function MovieDetails({ navigation, route }) {
             <Text style={styles.infos}>Release date: {movie.release_date}</Text>
           </View>
           <TouchableOpacity onPress={toMaps} style={styles.theatherbutton}>
-            <Text style={styles.buttonText}>Lähimmät teatterit !</Text>
+            <Text style={styles.buttonText}>Teatterit</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -141,15 +142,14 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   theatherbutton: {
+    marginTop: 10,
     borderRadius: 10,
-    backgroundColor: "black",
     padding: 10,
     width: 300,
     alignSelf: "center",
+    borderColor: "gold",
+    borderWidth: 0.2,
     shadowColor: "gold",
-    shadowOffset: { width: 2, height: 3 },
-    shadowOpacity: 0.7,
-    shadowRadius: 6,
   },
   postercon: {
     height: 420,
@@ -171,24 +171,28 @@ const styles = StyleSheet.create({
   },
   button: {
     borderRadius: 5,
-    backgroundColor: "#FEBE10",
-    height: 40,
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
+    borderWidth: 0.2,
+    borderColor: "gold",
+    height: 50,
     justifyContent: "center",
+    marginBottom: 10,
   },
   favoritenadwatchlistbutton: {
     flexDirection: "row",
     marginTop: 5,
     borderRadius: 5,
-    backgroundColor: "rgba(76, 187, 23, 0.6)",
     height: 35,
-    justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
+    padding: 10,
+    width: 150,
   },
   backbuttonText: {
     textAlign: "center",
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "bold",
-    color: "black",
+    color: "gold",
   },
   buttonText: {
     textAlign: "center",
@@ -198,15 +202,19 @@ const styles = StyleSheet.create({
   },
   buttonwatclistText: {
     textAlign: "center",
-    fontSize: 24,
+    fontSize: 16,
     fontWeight: "bold",
     color: "white",
   },
   movieinfocontainer: {
-    marginTop: 10,
-    marginBottom: 10,
     backgroundColor: "rgba(0, 0, 0, 0.2)",
     borderRadius: 10,
-    padding: 5,
+    padding: 15,
+  },
+  favwatchcon: {
+    justifyContent: "space-around",
+    height: 50,
+    width: "100%",
+    flexDirection: "row",
   },
 });
