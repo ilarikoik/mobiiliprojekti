@@ -49,7 +49,9 @@ export const deleteItem = async (id) => {
 export const getAllItems = async () => {
   try {
     console.log("Fetching items from watchlist...");
-    const result = await db.getAllAsync("SELECT * FROM watchlist");
+    const result = await db.getAllAsync(
+      "SELECT * FROM watchlist ORDER BY date DESC" // ensisijaisesti viimetteeks lisätyt ekana
+    );
     return result;
   } catch (error) {
     console.error("Could not retrieve items", error);

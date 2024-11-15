@@ -4,39 +4,66 @@ import fetchUpcomingMovies from "../apiCalls/FetchUpcomingMovies";
 import Card from "../components/Card";
 import VerticalCard from "../components/VerticalCard";
 import { getAllItems } from "../database/db";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function Watchlist({ navigation }) {
   const [newest, setNewest] = useState(true);
+  const [oldest, setOldest] = useState(false);
 
   const [movies, setMovies] = useState([]);
 
-  useEffect(() => {
-    const getUpcoming = async () => {
-      let showMovies;
-      showMovies = await getAllItems();
-      setMovies(showMovies);
-    };
-    getUpcoming();
-  }, []);
+  //useEffect(() => {
+  //  const getUpcoming = async () => {
+  //    let showMovies;
+  //    showMovies = await getAllItems();
+  //    setMovies(showMovies);
+  //  };
+  //  getUpcoming();
+  //}, []);
+
+  const getUpcoming = async () => {
+    const showMovies = await getAllItems();
+    setMovies(showMovies);
+  };
+
+  // useFocus päivittää aina kun screeni avataan jotta saadaan listalle lisätyt näykvii heti
+  // This will fetch the latest movies whenever the screen is focused
+  useFocusEffect(
+    React.useCallback(() => {
+      getUpcoming();
+      setNewest(true);
+    }, [])
+  );
+
+  const sortOldest = async () => {
+    const showMovies = await getAllItems();
+    setNewest(false);
+    const oldest = showMovies.sort((a, b) => {
+      return new Date(a.date) - new Date(b.date);
+    });
+    setMovies(oldest);
+  };
+  const sortNewest = async () => {
+    const showMovies = await getAllItems();
+    setNewest(true);
+    const oldest = showMovies.sort((a, b) => {
+      return new Date(b.date) - new Date(a.date);
+    });
+    setMovies(oldest);
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.buttoncon}>
         <TouchableOpacity
           style={[!newest ? styles.button : styles.buttonActivated]}
-          onPress={() => console.log(movies)}
-        >
-          <Text style={styles.buttonText}>leffet</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[!newest ? styles.button : styles.buttonActivated]}
-          onPress={() => setNewest(true)}
+          onPress={sortNewest}
         >
           <Text style={styles.buttonText}>uusimmat</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[newest ? styles.button : styles.buttonActivated]}
-          onPress={() => setNewest(false)}
+          onPress={sortOldest}
         >
           <Text style={styles.buttonText}>vanhimmat</Text>
         </TouchableOpacity>

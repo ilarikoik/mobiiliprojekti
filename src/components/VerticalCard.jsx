@@ -41,7 +41,7 @@ export default function VerticalCard({ navigation, movies }) {
     deleteItem(id);
     const update = movieList.filter((item) => item.id !== id); // jotta useEffecti pyörähtää
     setMovieList(update);
-    Alert.alert("POISTETTU");
+    //Alert.alert("POISTETTU");
   };
 
   return (
