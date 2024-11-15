@@ -251,7 +251,7 @@ export default function HomeScreen({ navigation }) {
             <Card movies={movies} navigation={navigation}></Card>
           ) : (
             <ActivityIndicator
-              size="large"
+              size={50}
               color="#fff"
               style={{ marginTop: 100 }}
             />

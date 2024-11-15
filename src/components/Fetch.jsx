@@ -7,7 +7,7 @@
 //   const [loading, setLoading] = useState(false);
 //   const [data, setData] = useState([]);
 
-//   // hakee trendaavat leffat 
+//   // hakee trendaavat leffat
 //   useEffect(() => {
 //   const fetchMovies = async () => {
 //     try {
@@ -27,7 +27,7 @@
 //   }, [url])
 
 //   if (loading) {
-//     return <ActivityIndicator size="large" color="#fff"style={{marginTop:100,}} />; // Show loading indicator
+//     return <ActivityIndicator  color="#fff"style={{marginTop:100,}} />; // Show loading indicator
 //   }
 //   return (
 //   <View>

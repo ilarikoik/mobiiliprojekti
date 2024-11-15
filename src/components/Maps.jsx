@@ -90,7 +90,7 @@ export default function Maps({ navigation, route }) {
       ) : fromDetails === null ? (
         <View style={styles.titlecon}>
           <ActivityIndicator
-            size="large"
+            size={50}
             color="#fff"
             style={{ marginTop: 100 }}
           />
