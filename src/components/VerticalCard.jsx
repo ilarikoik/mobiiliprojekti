@@ -57,6 +57,30 @@ export default function VerticalCard({ navigation, movies }) {
               <View style={styles.titlecon}>
                 <Text style={styles.title}>{item.original_title}</Text>
               </View>
+              <View style={styles.iconcon}>
+                <TouchableOpacity
+                  style={styles.favoritenadwatchlistbutton}
+                  onPress={() => navigation.goBack()}
+                >
+                  <AntDesign
+                    name="plus"
+                    size={16}
+                    color="gold"
+                    style={{ paddingRight: 10 }}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.favoritenadwatchlistbutton}
+                  onPress={() => navigation.goBack()}
+                >
+                  <AntDesign
+                    name="star"
+                    size={16}
+                    color="gold"
+                    style={{ paddingRight: 10 }}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
           </TouchableOpacity>
         )}
@@ -109,9 +133,21 @@ const styles = StyleSheet.create({
   titlecon: {
     flexDirection: "row",
     height: "100%",
-    width: "80%",
+    width: "60%",
     alignItems: "center",
     padding: 5,
+  },
+  iconcon: {
+    height: "100%",
+    width: 50,
+    padding: 5,
+  },
+  favoritenadwatchlistbutton: {
+    margin: 2,
+    height: 40,
+    width: 40,
+    justifyContent: "center",
+    alignItems: "center",
   },
   title: {
     color: "white",

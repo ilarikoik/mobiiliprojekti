@@ -124,4 +124,16 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "gold",
   },
+  iconcon: {
+    height: "100%",
+    width: 50,
+    padding: 5,
+  },
+  favoritenadwatchlistbutton: {
+    margin: 2,
+    height: 40,
+    width: 40,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
