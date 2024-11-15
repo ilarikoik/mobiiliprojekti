@@ -27,6 +27,7 @@ import fetchMovieGenres from "../apiCalls/fetchMovieGenres";
 import fetchMoviesByGenre from "../apiCalls/fetchMoviesByGenre";
 import PopUpMenu from "../components/PopUpMenu";
 import { Menu, MenuProvider } from "react-native-popup-menu";
+import { getAllItems } from "../database/db";
 
 export default function HomeScreen({ navigation }) {
   const [movies, setMovies] = useState([]);
@@ -177,6 +178,7 @@ export default function HomeScreen({ navigation }) {
   };
 
   // jos hajoo niin koska scrollview ja flatlist samassa? vissii ei kannata olla
+
   return (
     <>
       <ScrollView>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -7,7 +7,7 @@ import Watchlist from "./src/screens/Watchlist";
 import MovieDetails from "./src/screens/MovieDetails";
 import Maps from "./src/components/Maps";
 import Favorites from "./src/screens/Favorites";
-
+import { initialize, saveItem, getAllItems } from "./src/database/db";
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -30,10 +30,11 @@ const WacthNavigator = () => {
   );
 };
 
-// teksti '#ccc',
-// tausta '#333'
-
 export default function App() {
+  useEffect(() => {
+    initialize();
+    getAllItems();
+  }, []);
   return (
     <NavigationContainer>
       <Drawer.Navigator

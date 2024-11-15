@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { API_KEY } from "../../config";
+import { deleteItem } from "../database/db";
 
 export default function VerticalCard({ navigation, movies }) {
   const [movieId, setMovieId] = useState();
@@ -36,6 +37,13 @@ export default function VerticalCard({ navigation, movies }) {
     navigation.navigate("Details", { movieId: itemId });
   };
 
+  const deleteMovie = (id) => {
+    deleteItem(id);
+    const update = movieList.filter((item) => item.id !== id); // jotta useEffecti pyörähtää
+    setMovieList(update);
+    Alert.alert("POISTETTU");
+  };
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -43,27 +51,27 @@ export default function VerticalCard({ navigation, movies }) {
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() => details(item.id)}
+            onPress={() => details(item.movieId)}
             style={styles.itemcontainer}
           >
             <View style={styles.infocon}>
               <ImageBackground
                 source={{
-                  uri: `${POSTER}${item.poster_path || item.backdrop_path}`,
+                  uri: `${POSTER}${item.img}`,
                 }}
                 style={styles.item}
                 imageStyle={styles.image}
               ></ImageBackground>
               <View style={styles.titlecon}>
-                <Text style={styles.title}>{item.original_title}</Text>
+                <Text style={styles.title}>{item.title}</Text>
               </View>
               <View style={styles.iconcon}>
                 <TouchableOpacity
                   style={styles.favoritenadwatchlistbutton}
-                  onPress={() => navigation.goBack()}
+                  onPress={() => deleteMovie(item.id)}
                 >
                   <AntDesign
-                    name="plus"
+                    name={!item.katselulista === 1 ? "plus" : "minus"}
                     size={16}
                     color="gold"
                     style={{ paddingRight: 10 }}

@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { API_KEY } from "../../config";
+import { initialize, saveItem, getAllItems } from "../database/db";
 
 export default function Card({ navigation, movies }) {
   const [movieId, setMovieId] = useState();
@@ -23,10 +24,24 @@ export default function Card({ navigation, movies }) {
     setMovieList(movies);
   }, [movies]);
 
-  const handleFavorite = () => {
-    console.log("lisätty");
-    // jos on jo DB nii alertti joku viesti
-    Alert.alert("Lisätty suosikkeihin!");
+  const fetchItems = async () => {
+    try {
+      const items = await getAllItems();
+      console.log("Retrieved itemsasdasdasdsada:", items);
+      return items;
+    } catch (error) {
+      console.error("Error fetching items:", error);
+      return [];
+    }
+  };
+  const handleWatchlist = async (movie) => {
+    await saveItem(
+      movie.title,
+      movie.poster_path,
+      new Date().toISOString(),
+      1,
+      movie.id
+    );
   };
   // eli lähetä api LeffaSivu komponentille id:llä? ja se näyttää siellä vaa sen tiedot sit ?
   const details = (itemId) => {
@@ -54,18 +69,18 @@ export default function Card({ navigation, movies }) {
             >
               <TouchableOpacity
                 style={styles.favorite}
-                onPress={handleFavorite}
+                onPress={() => Alert.alert("lisätty suosikkeihgi")}
               >
                 <AntDesign name="star" size={26} color="gold" />
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.favorite}
-                onPress={() => Alert.alert("lisätty katselulistalle")}
+                onPress={() => handleWatchlist(item)}
               >
                 <AntDesign
                   name="plus"
                   size={26}
-                  color="white"
+                  color="gold"
                   style={{ backgroundColor: "#00000080" }}
                 />
               </TouchableOpacity>

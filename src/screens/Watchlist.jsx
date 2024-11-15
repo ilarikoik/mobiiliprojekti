@@ -3,23 +3,17 @@ import { View, Text, Button, StyleSheet, TouchableOpacity } from "react-native";
 import fetchUpcomingMovies from "../apiCalls/FetchUpcomingMovies";
 import Card from "../components/Card";
 import VerticalCard from "../components/VerticalCard";
+import { getAllItems } from "../database/db";
 
 export default function Watchlist({ navigation }) {
   const [newest, setNewest] = useState(true);
-  // käytä card komponenttia ja anna parametrinä sille numColumns={showColumns} // monta itemiä per rivi eli tähä setShowColumns(1)
-  // showsVerticalScrollIndicator={false}
-  //    käytä card komponenttia ja anna parametrinä sille numColumns
-  //   - Näkyy kaikki katselulistalle lisätyt
-  //   - Voi poistaa katselulistalta
-  //   - lajitella vanhimmat lisätyt
-  //   - lajitella uusimmat lisätyt
+
   const [movies, setMovies] = useState([]);
-  const [movideId, setMovieId] = useState();
 
   useEffect(() => {
     const getUpcoming = async () => {
       let showMovies;
-      showMovies = await fetchUpcomingMovies(1);
+      showMovies = await getAllItems();
       setMovies(showMovies);
     };
     getUpcoming();
@@ -28,6 +22,12 @@ export default function Watchlist({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.buttoncon}>
+        <TouchableOpacity
+          style={[!newest ? styles.button : styles.buttonActivated]}
+          onPress={() => console.log(movies)}
+        >
+          <Text style={styles.buttonText}>leffet</Text>
+        </TouchableOpacity>
         <TouchableOpacity
           style={[!newest ? styles.button : styles.buttonActivated]}
           onPress={() => setNewest(true)}
