@@ -8,11 +8,14 @@ import {
   ImageBackground,
   FlatList,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView, useSafeAreaFrame } from "react-native-safe-area-context";
 import fetchMovieById from "../apiCalls/fetchMovieById";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import { saveItem } from "../database/db";
+import { addFavorite } from "../utils/addfavorite";
 
 export default function MovieDetails({ navigation, route }) {
   const { movieId } = route.params; // sama nimi ku lähetettäessä
@@ -41,6 +44,21 @@ export default function MovieDetails({ navigation, route }) {
   const toMaps = () => {
     navigation.navigate("Maps", { fromDetails: "jep" });
   };
+
+  const handleWatchlist = async () => {
+    console.log(movie);
+    await saveItem(
+      movie.title,
+      movie.poster_path,
+      new Date().toISOString(),
+      1,
+      movie.id
+    );
+  };
+
+  const handleFavorite = async () => {
+    await addFavorite(movie);
+  };
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -53,7 +71,7 @@ export default function MovieDetails({ navigation, route }) {
         <View style={styles.favwatchcon}>
           <TouchableOpacity
             style={styles.favoritenadwatchlistbutton}
-            onPress={() => navigation.goBack()}
+            onPress={handleWatchlist}
           >
             <AntDesign
               name="plus"
@@ -65,7 +83,7 @@ export default function MovieDetails({ navigation, route }) {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.favoritenadwatchlistbutton}
-            onPress={() => navigation.goBack()}
+            onPress={handleFavorite}
           >
             <AntDesign
               name="star"

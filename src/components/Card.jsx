@@ -18,6 +18,8 @@ import { saveItemFavorites } from "../database/favoritesdb";
 import { TextInput } from "react-native-gesture-handler";
 import DialogPopUp from "./Dialog";
 import { SaveFilled } from "@ant-design/icons";
+import { getAllFavorites } from "../database/favoritesdb";
+import { addFavorite } from "../utils/addfavorite";
 
 export default function Card({ navigation, movies }) {
   const [movieId, setMovieId] = useState();
@@ -49,43 +51,9 @@ export default function Card({ navigation, movies }) {
       movie.id
     );
   };
+  // ../utils
   const handleFavorites = async (movie) => {
-    Alert.prompt(
-      "Arvioi elokuva 1-10",
-      "Pilkku sallittu",
-      [
-        {
-          text: "Myöhemmin",
-          onPress: async () =>
-            await saveItemFavorites(
-              movie.title,
-              movie.poster_path,
-              new Date().toISOString(),
-              1,
-              movie.id,
-              0
-            ),
-          style: "Myöhemmin",
-        },
-        {
-          text: "OK",
-          onPress: async (text) => {
-            let replace = text.replace(",", ".");
-            await saveItemFavorites(
-              movie.title,
-              movie.poster_path,
-              new Date().toISOString(),
-              1,
-              movie.id,
-              replace
-            );
-          },
-        },
-      ],
-      "plain-text",
-      null,
-      "numeric"
-    );
+    await addFavorite(movie);
   };
 
   // eli lähetä api MovieDetails komponentille id:llä? ja se näyttää siellä vaa sen tiedot sit ?

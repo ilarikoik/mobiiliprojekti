@@ -47,7 +47,7 @@ export const saveItemFavorites = async (
 export const getAllFavorites = async () => {
   try {
     const items = await db.getAllAsync(
-      `SELECT * FROM favorites ORDER BY CAST(grade AS INTEGER) DESC;
+      `SELECT * FROM favorites ORDER BY grade DESC;
 `
     );
     return items;

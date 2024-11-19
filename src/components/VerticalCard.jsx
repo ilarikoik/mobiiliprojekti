@@ -13,9 +13,12 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import { API_KEY } from "../../config";
 import { deleteItem } from "../database/db";
+import { saveItemFavorites } from "../database/favoritesdb";
+import { addFavorite } from "../utils/addfavorite";
 
 export default function VerticalCard({ navigation, movies, deleteMovie }) {
   const [movieId, setMovieId] = useState();
+  const [addMovie, setAddMovie] = useState();
   const POSTER = "https://image.tmdb.org/t/p/w500";
 
   const [movieList, setMovieList] = useState([]);
@@ -33,6 +36,7 @@ export default function VerticalCard({ navigation, movies, deleteMovie }) {
   const details = (itemId) => {
     setMovieId(itemId);
     console.log(navigation);
+    console.log(itemId + "\n\n\n\n\n\n");
     // kun vastaanotetaan propsi pitää käyttää tätä annettua nimeä
     navigation.navigate("Details", { movieId: itemId });
   };
@@ -44,6 +48,9 @@ export default function VerticalCard({ navigation, movies, deleteMovie }) {
   //  //Alert.alert("POISTETTU");
   //};
 
+  const addFavo = async (item) => {
+    await addFavorite(item);
+  };
   return (
     <View style={styles.container}>
       <FlatList
@@ -76,23 +83,25 @@ export default function VerticalCard({ navigation, movies, deleteMovie }) {
                   onPress={() => deleteMovie(item.id)}
                 >
                   <AntDesign
-                    name={!item.katselulista === 1 ? "plus" : "minus"}
-                    size={16}
-                    color="gold"
+                    name="delete"
+                    size={20}
+                    color="red"
                     style={{ paddingRight: 10 }}
                   />
                 </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.favoritenadwatchlistbutton}
-                  onPress={() => navigation.goBack()}
-                >
-                  <AntDesign
-                    name="star"
-                    size={16}
-                    color="gold"
-                    style={{ paddingRight: 10 }}
-                  />
-                </TouchableOpacity>
+                {/* item.katselulista ? (
+                  <TouchableOpacity
+                    style={styles.favoritenadwatchlistbutton}
+                    onPress={() => addFavo(item)}
+                  >
+                    <AntDesign
+                      name="star"
+                      size={16}
+                      color="gold"
+                      style={{ paddingRight: 10 }}
+                    />
+                  </TouchableOpacity>
+                ) : null */}
               </View>
             </View>
           </TouchableOpacity>
