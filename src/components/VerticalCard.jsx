@@ -14,7 +14,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { API_KEY } from "../../config";
 import { deleteItem } from "../database/db";
 
-export default function VerticalCard({ navigation, movies }) {
+export default function VerticalCard({ navigation, movies, deleteMovie }) {
   const [movieId, setMovieId] = useState();
   const POSTER = "https://image.tmdb.org/t/p/w500";
 
@@ -37,12 +37,12 @@ export default function VerticalCard({ navigation, movies }) {
     navigation.navigate("Details", { movieId: itemId });
   };
 
-  const deleteMovie = (id) => {
-    deleteItem(id);
-    const update = movieList.filter((item) => item.id !== id); // jotta useEffecti pyörähtää
-    setMovieList(update);
-    //Alert.alert("POISTETTU");
-  };
+  //const deleteMovie = (id) => {
+  //  deleteItem(id);
+  //  const update = movieList.filter((item) => item.id !== id); // jotta useEffecti pyörähtää
+  //  setMovieList(update);
+  //  //Alert.alert("POISTETTU");
+  //};
 
   return (
     <View style={styles.container}>
@@ -64,6 +64,14 @@ export default function VerticalCard({ navigation, movies }) {
               ></ImageBackground>
               <View style={styles.titlecon}>
                 <Text style={styles.title}>{item.title}</Text>
+                <Text style={styles.grade}>
+                  {item.grade !== undefined && (
+                    <Text>
+                      {item.grade === 0 ? "Ei arvioitu" : item.grade}
+                      {typeof item.grade}
+                    </Text>
+                  )}
+                </Text>
               </View>
               <View style={styles.iconcon}>
                 <TouchableOpacity
@@ -139,10 +147,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   titlecon: {
-    flexDirection: "row",
+    flexDirection: "column",
     height: "100%",
     width: "60%",
     alignItems: "center",
+    justifyContent: "center",
     padding: 5,
   },
   iconcon: {
@@ -160,6 +169,11 @@ const styles = StyleSheet.create({
   title: {
     color: "white",
     fontWeight: "bold",
+    fontSize: 17,
+  },
+  grade: {
+    color: "white",
+    marginTop: 3,
     fontSize: 17,
   },
   overview: {

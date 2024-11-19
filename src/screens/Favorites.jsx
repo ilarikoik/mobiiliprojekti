@@ -1,34 +1,44 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Button, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import fetchUpcomingMovies from "../apiCalls/FetchUpcomingMovies";
 import Card from "../components/Card";
 import VerticalCard from "../components/VerticalCard";
 import { FlatList } from "react-native-gesture-handler";
 import { SearchBar } from "react-native-screens";
+import { getAllFavorites, deleteItemFavorite } from "../database/favoritesdb";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function Favorites({ navigation }) {
-  // käytä card komponenttia ja anna parametrinä sille numColumns={showColumns} // monta itemiä per rivi eli tähä setShowColumns(1)
-  // showsVerticalScrollIndicator={false}
-  //    käytä card komponenttia ja anna parametrinä sille numColumns
-  //   - Näkyy kaikki katselulistalle lisätyt
-  //   - Voi poistaa katselulistalta
-  //   - lajitella vanhimmat lisätyt
-  //   - lajitella uusimmat lisätyt
   const [movies, setMovies] = useState([]);
+  const [effect, setEffect] = useState(0);
   const [movideId, setMovieId] = useState();
 
+  const getFavorites = async () => {
+    let mov = await getAllFavorites();
+    setMovies(mov);
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getFavorites();
+    }, [])
+  );
+
   useEffect(() => {
-    const getUpcoming = async () => {
-      let showMovies;
-      showMovies = await fetchUpcomingMovies(1);
-      setMovies(showMovies);
-    };
-    getUpcoming();
-  }, []);
+    getFavorites();
+  }, [effect]);
 
   const [seacrchBy, setSearchBy] = useState([
     { id: 1, by: "Paras", isActive: true },
     { id: 2, by: "Huonoin", isActive: false },
+    { id: 5, by: "Kommentoidut", isActive: false },
     { id: 3, by: "Uusin", isActive: false },
     { id: 4, by: "Vanhin", isActive: false },
   ]);
@@ -44,11 +54,22 @@ export default function Favorites({ navigation }) {
       return item;
     });
     setSearchBy(updatedItems);
+    showByCategory(itemId);
   };
 
-  // sit vaan lajitellaan sen perusteella mikä on active
-  // map..if(item){movies.filter( a => b ... )}
-  // setmovies(updatedmovies)
+  const showByCategory = async (itemId) => {
+    // setEffect((prevEffect) => prevEffect + 1);
+    if (itemId === 1) {
+      let update = movies.sort((a, b) => b.grade - a.grade);
+      setMovies(update);
+    } else if (itemId === 2) {
+      let update = movies.sort((a, b) => a.grade - b.grade);
+      setMovies(update);
+    } else if (itemId === 5) {
+      let update = movies.filter((item) => typeof item.grade === "string");
+      setMovies(update);
+    }
+  };
 
   const Flist = () => {
     return (
@@ -59,7 +80,10 @@ export default function Favorites({ navigation }) {
         renderItem={({ item }) => (
           <TouchableOpacity
             style={[!item.isActive ? styles.button : styles.buttonActivated]}
-            onPress={() => changeBy(item.id)}
+            onPress={() => {
+              changeBy(item.id);
+              showByCategory();
+            }}
           >
             <Text style={styles.buttonText}>{item.by} </Text>
           </TouchableOpacity>
@@ -69,12 +93,23 @@ export default function Favorites({ navigation }) {
     );
   };
 
+  const deleteMovie = (id) => {
+    deleteItemFavorite(id);
+    const update = movies.filter((item) => item.id !== id); // jotta useEffecti pyörähtää
+    setMovies(update);
+    //Alert.alert("POISTETTU");
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.buttoncon}>
         <Flist />
       </View>
-      <VerticalCard movies={movies} navigation={navigation}></VerticalCard>
+      <VerticalCard
+        movies={movies}
+        navigation={navigation}
+        deleteMovie={deleteMovie}
+      ></VerticalCard>
     </View>
   );
 }

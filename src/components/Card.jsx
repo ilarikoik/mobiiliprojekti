@@ -13,27 +13,32 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import { API_KEY } from "../../config";
 import { initialize, saveItem, getAllItems } from "../database/db";
+import { saveItemFavorites } from "../database/favoritesdb";
+import { TextInput } from "react-native-gesture-handler";
+import DialogPopUp from "./Dialog";
+import { SaveFilled } from "@ant-design/icons";
 
 export default function Card({ navigation, movies }) {
   const [movieId, setMovieId] = useState();
   const POSTER = "https://image.tmdb.org/t/p/w500";
-  // const movieUrl = `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`
+  const [grade, setGrade] = useState();
 
   const [movieList, setMovieList] = useState([]);
   useEffect(() => {
     setMovieList(movies);
   }, [movies]);
 
-  const fetchItems = async () => {
-    try {
-      const items = await getAllItems();
-      console.log("Retrieved itemsasdasdasdsada:", items);
-      return items;
-    } catch (error) {
-      console.error("Error fetching items:", error);
-      return [];
-    }
-  };
+  //const fetchItems = async () => {
+  //  try {
+  //    const items = await getAllItems();
+  //    console.log("Retrieved itemsasdasdasdsada:", items);
+  //    return items;
+  //  } catch (error) {
+  //    console.error("Error fetching items:", error);
+  //    return [];
+  //  }
+  //};
+
   const handleWatchlist = async (movie) => {
     await saveItem(
       movie.title,
@@ -43,7 +48,41 @@ export default function Card({ navigation, movies }) {
       movie.id
     );
   };
-  // eli lähetä api LeffaSivu komponentille id:llä? ja se näyttää siellä vaa sen tiedot sit ?
+  const handleFavorites = async (movie) => {
+    Alert.prompt(
+      "Arvioi elokuva",
+      "Arvioi elokuva lyhyesti omin sanoin tai numeroin.",
+      [
+        {
+          text: "Myöhemmin",
+          onPress: async () =>
+            await saveItemFavorites(
+              movie.title,
+              movie.poster_path,
+              new Date().toISOString(),
+              1,
+              movie.id,
+              0
+            ),
+          style: "Myöhemmin",
+        },
+        {
+          text: "OK",
+          onPress: async (text) =>
+            await saveItemFavorites(
+              movie.title,
+              movie.poster_path,
+              new Date().toISOString(),
+              1,
+              movie.id,
+              text
+            ),
+        },
+      ]
+    );
+  };
+
+  // eli lähetä api MovieDetails komponentille id:llä? ja se näyttää siellä vaa sen tiedot sit ?
   const details = (itemId) => {
     setMovieId(itemId);
     // kun vastaanotetaan propsi pitää käyttää tätä annettua nimeä
@@ -69,7 +108,7 @@ export default function Card({ navigation, movies }) {
             >
               <TouchableOpacity
                 style={styles.favorite}
-                onPress={() => Alert.alert("lisätty suosikkeihgi")}
+                onPress={() => handleFavorites(item)}
               >
                 <AntDesign name="star" size={26} color="gold" />
               </TouchableOpacity>

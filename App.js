@@ -8,6 +8,7 @@ import MovieDetails from "./src/screens/MovieDetails";
 import Maps from "./src/components/Maps";
 import Favorites from "./src/screens/Favorites";
 import { initialize, saveItem, getAllItems } from "./src/database/db";
+import { initializeFavorites } from "./src/database/favoritesdb";
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -29,10 +30,20 @@ const WacthNavigator = () => {
     </Stack.Navigator>
   );
 };
+const FavoriteshNavigator = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Favorites" component={Favorites} />
+      <Stack.Screen name="Details" component={MovieDetails} />
+      <Stack.Screen name="Maps" component={Maps} />
+    </Stack.Navigator>
+  );
+};
 
 export default function App() {
   useEffect(() => {
     initialize();
+    initializeFavorites();
     getAllItems();
   }, []);
   return (
@@ -59,7 +70,7 @@ export default function App() {
         {/* omat stäkit jos on monimutkane navigointi muute samaa vaa  */}
         <Drawer.Screen name="Leffa" component={StackNavigator} />
         <Drawer.Screen name="Katselulista" component={WacthNavigator} />
-        <Drawer.Screen name="Suosikit" component={Favorites} />
+        <Drawer.Screen name="Suosikit" component={FavoriteshNavigator} />
         {/* <Drawer.Screen name="Details" component={MovieDetails} /> ei tarttee täällä koska on stackissa, aiheuttaa vaa turhia erroreita */}
         <Drawer.Screen name="Teatterit" component={Maps} />
       </Drawer.Navigator>

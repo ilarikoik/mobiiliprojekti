@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Button, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import fetchUpcomingMovies from "../apiCalls/FetchUpcomingMovies";
 import Card from "../components/Card";
 import VerticalCard from "../components/VerticalCard";
-import { getAllItems } from "../database/db";
+import { getAllItems, deleteItem } from "../database/db";
 import { useFocusEffect } from "@react-navigation/native";
 
 export default function Watchlist({ navigation }) {
@@ -52,6 +59,13 @@ export default function Watchlist({ navigation }) {
     setMovies(oldest);
   };
 
+  const deleteMovie = (id) => {
+    deleteItem(id);
+    const update = movies.filter((item) => item.id !== id); // jotta useEffecti pyörähtää
+    setMovies(update);
+    //Alert.alert("POISTETTU");
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.buttoncon}>
@@ -68,7 +82,11 @@ export default function Watchlist({ navigation }) {
           <Text style={styles.buttonText}>vanhimmat</Text>
         </TouchableOpacity>
       </View>
-      <VerticalCard movies={movies} navigation={navigation}></VerticalCard>
+      <VerticalCard
+        movies={movies}
+        navigation={navigation}
+        deleteMovie={deleteMovie}
+      ></VerticalCard>
     </View>
   );
 }
