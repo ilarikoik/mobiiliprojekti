@@ -70,14 +70,22 @@ export default function VerticalCard({ navigation, movies, deleteMovie }) {
                 imageStyle={styles.image}
               ></ImageBackground>
               <View style={styles.titlecon}>
-                <Text style={styles.title}>{item.title}</Text>
-                <Text style={styles.grade}>
-                  {item.grade !== undefined && (
-                    <Text>{item.grade === 0 ? "Ei arvioitu" : item.grade}</Text>
-                  )}
-                </Text>
-              </View>
-              <View style={styles.iconcon}>
+                <View style={styles.gradecon}>
+                  <Text
+                    style={
+                      item.katselulista !== 1 ? styles.title : styles.title2
+                    }
+                  >
+                    {item.title}
+                  </Text>
+                  <Text style={styles.grade}>
+                    {item.grade !== undefined && (
+                      <Text>
+                        {item.grade === 0 ? "Ei arvioitu" : item.grade}
+                      </Text>
+                    )}
+                  </Text>
+                </View>
                 <TouchableOpacity
                   style={styles.favoritenadwatchlistbutton}
                   onPress={() => deleteMovie(item.id)}
@@ -153,29 +161,38 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   titlecon: {
-    flexDirection: "column",
+    flexDirection: "row",
     height: "100%",
-    width: "60%",
+    width: "80%",
     alignItems: "center",
-    justifyContent: "center",
-    padding: 5,
-  },
-  iconcon: {
-    height: "100%",
-    width: 50,
+    justifyContent: "space-around",
     padding: 5,
   },
   favoritenadwatchlistbutton: {
     margin: 2,
-    height: 40,
+    height: 70,
     width: 40,
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "flex-end",
   },
   title: {
     color: "white",
     fontWeight: "bold",
     fontSize: 17,
+    maxWidth: 150,
+  },
+  title2: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 17,
+    maxWidth: 150,
+    marginTop: 20,
+  },
+  gradecon: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: 170,
+    height: 70,
   },
   grade: {
     color: "white",
