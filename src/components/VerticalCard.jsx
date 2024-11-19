@@ -66,10 +66,7 @@ export default function VerticalCard({ navigation, movies, deleteMovie }) {
                 <Text style={styles.title}>{item.title}</Text>
                 <Text style={styles.grade}>
                   {item.grade !== undefined && (
-                    <Text>
-                      {item.grade === 0 ? "Ei arvioitu" : item.grade}
-                      {typeof item.grade}
-                    </Text>
+                    <Text>{item.grade === 0 ? "Ei arvioitu" : item.grade}</Text>
                   )}
                 </Text>
               </View>

@@ -38,7 +38,7 @@ export default function Favorites({ navigation }) {
   const [seacrchBy, setSearchBy] = useState([
     { id: 1, by: "Paras", isActive: true },
     { id: 2, by: "Huonoin", isActive: false },
-    { id: 5, by: "Kommentoidut", isActive: false },
+    //{ id: 5, by: "Kommentoidut", isActive: false },
     { id: 3, by: "Uusin", isActive: false },
     { id: 4, by: "Vanhin", isActive: false },
   ]);
@@ -58,12 +58,18 @@ export default function Favorites({ navigation }) {
   };
 
   const showByCategory = async (itemId) => {
-    // setEffect((prevEffect) => prevEffect + 1);
+    //setEffect((prevEffect) => prevEffect + 1);
     if (itemId === 1) {
       let update = movies.sort((a, b) => b.grade - a.grade);
       setMovies(update);
     } else if (itemId === 2) {
       let update = movies.sort((a, b) => a.grade - b.grade);
+      setMovies(update);
+    } else if (itemId === 3) {
+      let update = movies.sort((a, b) => new Date(b.date) - new Date(a.date));
+      setMovies(update);
+    } else if (itemId === 4) {
+      let update = movies.sort((a, b) => new Date(a.date) - new Date(b.date));
       setMovies(update);
     } else if (itemId === 5) {
       let update = movies.filter((item) => typeof item.grade === "string");

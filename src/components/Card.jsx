@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert,
+  Keyboard,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { API_KEY } from "../../config";
@@ -50,8 +51,8 @@ export default function Card({ navigation, movies }) {
   };
   const handleFavorites = async (movie) => {
     Alert.prompt(
-      "Arvioi elokuva",
-      "Arvioi elokuva lyhyesti omin sanoin tai numeroin.",
+      "Arvioi elokuva 1-10",
+      "Pilkku sallittu",
       [
         {
           text: "Myöhemmin",
@@ -68,17 +69,22 @@ export default function Card({ navigation, movies }) {
         },
         {
           text: "OK",
-          onPress: async (text) =>
+          onPress: async (text) => {
+            let replace = text.replace(",", ".");
             await saveItemFavorites(
               movie.title,
               movie.poster_path,
               new Date().toISOString(),
               1,
               movie.id,
-              text
-            ),
+              replace
+            );
+          },
         },
-      ]
+      ],
+      "plain-text",
+      null,
+      "numeric"
     );
   };
 
