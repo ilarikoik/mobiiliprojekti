@@ -5,6 +5,24 @@ Käyttäjänä voi selata tulevien elokuvien julkaisuajankohtia, tarkastella nii
 
 Käyttäjä voi myös lisätä omalle katselulistalleen elokuvia ja arvioida sekä selata elokuvia omien arvioiden perusteella, jotta henkilökohtaiset suosikit löytyvät helposti.
 
+## Käytetyt teknologiat
+
+Sovellus on toteutettu käyttäen seuraavia teknologioita ja työkaluja:
+
+- **React Native**: Sovelluksen kehittämiseen ja käyttöliittymän rakentamiseen.
+  - JSX-syntaksi: React-komponenttien luontiin ja käyttöön.
+- **SQLite**: Sovelluksen paikallinen tietokanta elokuvien suosikeille ja katselulistalle.
+- **React Navigation**:
+  - **Stack Navigator**: Sivuston eri näkymien hallintaan.
+  - **Drawer Navigator**: Valikkorakenteen luomiseen.
+- **Ant Design**: UI-komponentit ja tyylikäs käyttöliittymä.
+- **The Movie Database (TMDB) API**: Elokuvien tietojen, arviointien ja julkaisuaikojen hakemiseen.
+  - [TMDB API-dokumentaatio](https://developer.themoviedb.org/reference/intro/getting-started)
+- **React Native Maps**: Karttanäkymän toteuttamiseen.
+- **Google Places API**: Käyttäjän sijainnin perusteella lähistöllä olevien elokuvateatterien näyttämiseen.
+
+Näiden teknologioiden yhdistelmällä sovellus tarjoaa helpon tavan seurata elokuvien julkaisuja ja hallita katselulistoja.
+
 ---
 
 ## Sovelluksen pääominaisuudet
