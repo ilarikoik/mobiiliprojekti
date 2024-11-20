@@ -1,7 +1,7 @@
 # Mobiiliprojekti
 
 Sovelluksen ideana on pysyä kärryillä tulevien elokuvien julkaisuista kuten myös lukea arviointeja ja muuta.  
-Käyttäjänä voi selata tulevien elokuvien julkaisuajankohtia, tarkastella niiden arvioiteja ja saada yleiskäsityksen mistä elokuva kertoo.
+Käyttäjänä voi selata tulevien elokuvien julkaisuajankohtia, tarkastella niiden arviointeja ja saada yleiskäsityksen mistä elokuva kertoo.
 
 Käyttäjä voi myös lisätä omalle katselulistalleen elokuvia ja arvioida sekä selata elokuvia omien arvioiden perusteella, jotta henkilökohtaiset suosikit löytyvät helposti.
 
@@ -18,55 +18,53 @@ Käyttäjä voi myös lisätä omalle katselulistalleen elokuvia ja arvioida sek
 ### **Parhaimmat arvioidut elokuvat**
 
 Selaa elokuvia genren tai hakusanan perusteella.  
-![Parhaat](./assets/images/parhaimmat.jpg)
+<img src="./assets/images/parhaimmat.jpg" alt="Parhaat arvioidut elokuvat" width="400">
 
 ---
 
 ### **Tarjonnan selaus**
 
 Selaa niin pitkään, kun tarjontaa riittää.  
-![Lisää](./assets/images/Lataalisää.jpeg)
+<img src="./assets/images/Lataalisää.jpeg" alt="Lataalisää" width="400">
 
 ---
 
 ### **Navigointi ja perusasetukset**
 
 Käytä menuvalikkoa.  
-![Menu](./assets/images/burgermenu.jpeg)
+<img src="./assets/images/burgermenu.jpeg" alt="Menu" width="400">
 
 ---
 
 ### **Elokuvan yksityiskohdat**
 
 Näe elokuvan tiedot, kuten kuvaus, arvosana, genret ja julkaisupäivämäärä.  
-![Details](./assets/images/details.jpeg)
+<img src="./assets/images/details.jpeg" alt="Elokuvan tiedot" width="400">
 
 ---
 
 ### **Arviointi ja suosikit**
 
 Lisää suosikkeihin ja arvioi itse elokuvia.  
-![Arvioi](./assets/images/arvioi.jpeg)
+<img src="./assets/images/arvioi.jpeg" alt="Arviointi" width="400">
 
 ---
 
 ### **Omat suosikit**
 
 Katso omat suosikkielokuvat.  
-![Suosikit](./assets/images/suosikit.jpeg)
+<img src="./assets/images/suosikit.jpeg" alt="Suosikit" width="400">
 
 ---
 
 ### **Katselulista**
 
 Hallitse omaa katselulistaasi.  
-![Katselulista](./assets/images/katselulista.jpeg)
+<img src="./assets/images/katselulista.jpeg" alt="Katselulista" width="400">
 
 ---
 
 ### **Teatterit lähistöllä**
 
 Näe oman sijaintisi lähellä olevat teatterit.  
-![Teatterit](./assets/images/map.jpg)
-
----
+<img src="./assets/images/map.jpg" alt="Teatterit lähistöllä" width="400">
