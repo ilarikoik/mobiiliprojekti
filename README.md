@@ -11,7 +11,7 @@ Käyttäjä voi myös lisätä omalle katselulistalleen elokuvia ja arvioida sek
 
 ### **Teattereihin tulevat elokuvat**
 
-![Etusivun näkymä](./assets/images/Etusivu.jpeg)
+<img src="./assets/images/Etusivu.jpeg" alt="Etusivun näkymä" width="400">
 
 ---
 
