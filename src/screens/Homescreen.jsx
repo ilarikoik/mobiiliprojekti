@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
     shadowRadius: 7,
   },
   buttoncon: {
-    width: "90%",
+    width: "100%",
     flexDirection: "row",
     backgroundColor: "#333",
     justifyContent: "space-around",

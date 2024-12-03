@@ -34,6 +34,8 @@ export default function Maps({ navigation, route }) {
           console.log("ei hyväksytty");
           return null;
         }
+
+        console.log("TOIMIIIII")
         const current = await Location.getCurrentPositionAsync({});
         setRegion({
           latitude: current.coords.latitude,
@@ -52,8 +54,37 @@ export default function Maps({ navigation, route }) {
     request();
   }, []);
 
+  const getCoords = async () => {
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission not granted");
+        return;
+      }
+
+      const current = await Location.getCurrentPositionAsync({});
+      setRegion({
+        latitude: current.coords.latitude,
+        longitude: current.coords.longitude,
+        latitudeDelta: 0.05922,
+        longitudeDelta: 0.05421,
+      });
+
+      // Optionally, fetch movie theaters based on new location
+      const teatterit = await fetchMovieTheathers(
+        current.coords.latitude,
+        current.coords.longitude
+      );
+      setTheaters(teatterit);
+    } catch (error) {
+      console.log("Error getting location:", error);
+    }
+  };
   return (
     <View style={styles.container}>
+    <TouchableOpacity style={{justifyContent:'center',alignItems:'center'}} onPress={() => getCoords()}>
+      <Text style={{color:'white'}}>Nykyinen sijainti</Text>
+    </TouchableOpacity>
       <MapView style={styles.map} region={region}>
         <Marker
           coordinate={{
@@ -62,7 +93,7 @@ export default function Maps({ navigation, route }) {
           }}
           title="OMA SIJAINTI"
         >
-          <AntDesign name="user" size={24} color="gold" />
+          <AntDesign name="star" size={24} fontWeight="bolder" color="blue" />
         </Marker>
         {theaters.map((marker, index) => {
           return (
